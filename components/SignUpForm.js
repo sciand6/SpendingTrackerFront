@@ -1,28 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import { reduxForm, Field } from "redux-form";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
 import MyTextInput from "./MyTextInput";
 
 function MyForm(props) {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Sign Up</Text>
       <Field
         style={styles.input}
         name={"username"}
+        value={username}
+        onChange={(text) => setUsername(text)}
         placeholder="Username"
         component={MyTextInput}
       />
       <Field
         style={styles.input}
         name={"email"}
+        value={email}
+        onChange={(text) => setEmail(text)}
         placeholder="Email"
         component={MyTextInput}
       />
       <Field
         style={styles.input}
         name={"password"}
+        value={password}
+        onChange={(text) => setPassword(text)}
         placeholder="Password"
         secureTextEntry={true}
         component={MyTextInput}
@@ -30,6 +41,8 @@ function MyForm(props) {
       <Field
         style={styles.input}
         name={"passwordConfirmation"}
+        value={passwordConfirmation}
+        onChange={(text) => setPasswordConfirmation(text)}
         secureTextEntry={true}
         placeholder="Password Confirmation"
         component={MyTextInput}

@@ -12,7 +12,7 @@ export default function MyTextInput(props) {
     <View>
       <TextInput
         {...inputProps}
-        onChangeText={input.onChange}
+        onChangeText={(text) => input.onChange(text)}
         onBlur={input.onBlur}
         onFocus={input.onFocus}
         value={input.value}
