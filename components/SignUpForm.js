@@ -24,11 +24,13 @@ function MyForm(props) {
         style={styles.input}
         name={"password"}
         placeholder="Password"
+        secureTextEntry={true}
         component={MyTextInput}
       />
       <Field
         style={styles.input}
         name={"passwordConfirmation"}
+        secureTextEntry={true}
         placeholder="Password Confirmation"
         component={MyTextInput}
       />
@@ -77,6 +79,24 @@ const styles = StyleSheet.create({
   },
 });
 
+const validate = (values) => {
+  const errors = {};
+  if (!values.username) {
+    errors.username = "Username is required.";
+  }
+  if (!values.email) {
+    errors.email = "Email is required.";
+  }
+  if (!values.password) {
+    errors.password = "Password is required.";
+  }
+  if (!values.password) {
+    errors.passwordConfirmation = "Passwords do not match.";
+  }
+  return errors;
+};
+
 export default reduxForm({
   form: "SignUp",
+  validate,
 })(MyForm);
