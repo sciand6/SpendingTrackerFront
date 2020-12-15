@@ -1,4 +1,4 @@
-const BASE_URL = "http://192.168.2.30:3333";
+const BASE_URL = "http://localhost:3000";
 
 export const api = async (url, method, body = null, headers = {}) => {
   try {

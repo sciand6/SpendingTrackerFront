@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { reduxForm, Field } from "redux-form";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-
+import { connect } from "react-redux";
+import { createNewUser } from "../actions/authActions";
 import MyTextInput from "./MyTextInput";
+import { compose } from "redux";
 
 function MyForm(props) {
   const [username, setUsername] = useState("");
@@ -47,7 +49,12 @@ function MyForm(props) {
         placeholder="Password Confirmation"
         component={MyTextInput}
       />
-      <TouchableOpacity style={styles.button} onPress={props.handleSubmit}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={props.handleSubmit((values) =>
+          props.dispatch(createNewUser(values))
+        )}
+      >
         <Text style={styles.buttonText}>Submit!</Text>
       </TouchableOpacity>
     </View>
@@ -109,7 +116,14 @@ const validate = (values) => {
   return errors;
 };
 
-export default reduxForm({
-  form: "SignUp",
-  validate,
-})(MyForm);
+const mapDispatchToProps = (dispatch) => ({
+  dispatch,
+});
+
+export default compose(
+  connect(null, mapDispatchToProps),
+  reduxForm({
+    form: "SignUp",
+    validate,
+  })
+)(MyForm);
