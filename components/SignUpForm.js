@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { createNewUser } from "../actions/authActions";
 import MyTextInput from "./MyTextInput";
 import { compose } from "redux";
+import Loader from "./Loader";
 
 function MyForm(props) {
   const [username, setUsername] = useState("");
@@ -12,8 +13,10 @@ function MyForm(props) {
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
+  const { createUser } = props;
   return (
     <View style={styles.container}>
+      {createUser.isLoading && <Loader />}
       <Text style={styles.title}>Sign Up</Text>
       <Field
         style={styles.input}
@@ -86,7 +89,7 @@ const styles = StyleSheet.create({
   input: {
     height: 40,
     borderRadius: 25,
-    backgroundColor: "white",
+    backgroundColor: "#DDD",
     marginTop: 15,
     width: 300,
     paddingHorizontal: 10,
@@ -116,12 +119,16 @@ const validate = (values) => {
   return errors;
 };
 
+const mapStateToProps = (state) => ({
+  createUser: state.authReducer.createUser,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   dispatch,
 });
 
 export default compose(
-  connect(null, mapDispatchToProps),
+  connect(mapStateToProps, mapDispatchToProps),
   reduxForm({
     form: "SignUp",
     validate,

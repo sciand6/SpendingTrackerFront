@@ -1,39 +1,36 @@
 import { combineReducers } from "redux";
 
-const createUser = (state = {}, action) => {
+const getUser = (state = {}, action) => {
   switch (action.type) {
-    case "CREATE_USER_LOADING":
+    case "GET_USER_LOADING":
       return {
         isLoading: true,
         isError: false,
         isSuccess: false,
+        userDetails: null,
         errors: null,
-        isLoggedIn: false,
       };
-
-    case "CREATE_USER_SUCCESS":
+    case "GET_USER_SUCCESS":
       return {
         isLoading: false,
         isError: false,
         isSuccess: true,
+        userDetails: action.payload,
         errors: null,
-        isLoggedIn: true,
       };
-
-    case "CREATE_USER_FAIL":
+    case "GET_USER_FAIL":
       return {
         isLoading: false,
         isError: true,
         isSuccess: false,
+        userDetails: null,
         errors: action.payload,
-        isLoggedIn: false,
       };
-
     default:
       return state;
   }
 };
 
 export default combineReducers({
-  createUser,
+  getUser,
 });

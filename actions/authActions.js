@@ -10,7 +10,7 @@ export const createNewUser = (payload) => {
 
       if (response.success) {
         dispatch({
-          type: "CREAT_USER_SUCCESS",
+          type: "CREATE_USER_SUCCESS",
         });
         dispatch({
           type: "AUTH_USER_SUCCESS",
@@ -27,7 +27,7 @@ export const createNewUser = (payload) => {
       }
     } catch (error) {
       dispatch({
-        type: "CREAT_USER_FAIL",
+        type: "CREATE_USER_FAIL",
         payload: error.responseBody,
       });
       return error;
