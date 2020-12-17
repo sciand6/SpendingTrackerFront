@@ -1,5 +1,28 @@
 import { combineReducers } from "redux";
 
+const authData = (state = {}, action) => {
+  switch (action.type) {
+    case "AUTH_USER_SUCCESS":
+      return {
+        isLoggedIn: true,
+      };
+
+    case "AUTH_USER_FAIL":
+    case "CREATE_USER_FAIL":
+    case "LOGIN_USER_FAIL":
+    case "USER_LOGOUT_SUCCESS":
+      return {
+        isLoading: false,
+        isError: false,
+        isSuccess: false,
+        errors: null,
+        isLoggedIn: false,
+      };
+    default:
+      return state;
+  }
+};
+
 const createUser = (state = {}, action) => {
   switch (action.type) {
     case "CREATE_USER_LOADING":
@@ -8,7 +31,6 @@ const createUser = (state = {}, action) => {
         isError: false,
         isSuccess: false,
         errors: null,
-        isLoggedIn: false,
       };
 
     case "CREATE_USER_SUCCESS":
@@ -17,7 +39,6 @@ const createUser = (state = {}, action) => {
         isError: false,
         isSuccess: true,
         errors: null,
-        isLoggedIn: true,
       };
 
     case "CREATE_USER_FAIL":
@@ -26,16 +47,6 @@ const createUser = (state = {}, action) => {
         isError: true,
         isSuccess: false,
         errors: action.payload,
-        isLoggedIn: false,
-      };
-
-    case "USER_LOGOUT_SUCCESS":
-      return {
-        isLoading: false,
-        isError: false,
-        isSuccess: false,
-        errors: null,
-        isLoggedIn: false,
       };
 
     default:
@@ -51,7 +62,6 @@ const loginUser = (state = {}, action) => {
         isError: false,
         isSuccess: false,
         errors: null,
-        isLoggedIn: false,
       };
 
     case "LOGIN_USER_SUCCESS":
@@ -60,7 +70,6 @@ const loginUser = (state = {}, action) => {
         isError: false,
         isSuccess: true,
         errors: null,
-        isLoggedIn: true,
       };
 
     case "LOGIN_USER_FAIL":
@@ -69,7 +78,6 @@ const loginUser = (state = {}, action) => {
         isError: true,
         isSuccess: false,
         errors: action.payload,
-        isLoggedIn: false,
       };
 
     default:
@@ -80,4 +88,5 @@ const loginUser = (state = {}, action) => {
 export default combineReducers({
   createUser,
   loginUser,
+  authData,
 });

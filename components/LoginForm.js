@@ -11,10 +11,10 @@ function MyForm(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { loginUser } = props;
+  const { authData, loginUser } = props;
 
   useEffect(() => {
-    if (loginUser.isLoggedIn) {
+    if (authData.isLoggedIn) {
       props.navigation.navigate("Dashboard");
     }
   });
@@ -100,6 +100,7 @@ const validate = (values) => {
 };
 
 const mapStateToProps = (state) => ({
+  authData: state.authReducer.authData,
   loginUser: state.authReducer.loginUser,
 });
 

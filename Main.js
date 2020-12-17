@@ -11,14 +11,12 @@ import { connect } from "react-redux";
 const Stack = createStackNavigator();
 
 function Main(props) {
-  const { createUser, loginUser } = props;
+  const { authData } = props;
 
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={
-          createUser.isLoggedIn || loginUser.isLoggedIn ? "Dashboard" : "Home"
-        }
+        initialRouteName={authData.isLoggedIn ? "Dashboard" : "Home"}
         screenOptions={{
           headerShown: false,
         }}
@@ -33,8 +31,7 @@ function Main(props) {
 }
 
 const mapStateToProps = (state) => ({
-  createUser: state.authReducer.createUser,
-  loginUser: state.authReducer.loginUser,
+  authData: state.authReducer.authData,
 });
 
 export default connect(mapStateToProps, null)(Main);

@@ -4,10 +4,10 @@ import { connect } from "react-redux";
 import { logoutUser } from "../actions/authActions";
 
 function Dashboard(props) {
-  const { createUser } = props;
+  const { authData } = props;
 
   useEffect(() => {
-    if (!createUser.isLoggedIn) {
+    if (!authData.isLoggedIn) {
       props.navigation.navigate("Home");
     }
   });
@@ -22,8 +22,7 @@ function Dashboard(props) {
 }
 
 const mapStateToProps = (state) => ({
-  getUser: state.userReducer.getUser,
-  createUser: state.authReducer.createUser,
+  authData: state.authReducer.authData,
 });
 
 const mapDispatchToProps = (dispatch) => ({
