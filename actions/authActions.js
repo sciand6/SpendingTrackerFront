@@ -14,7 +14,7 @@ export const createNewUser = (payload) => {
         });
         dispatch({
           type: "AUTH_USER_SUCCESS",
-          token: response.token,
+          token: response.responseBody.token,
         });
         dispatch({
           type: "GET_USER_SUCCESS",
@@ -49,7 +49,7 @@ export const userLogin = (payload) => {
         });
         dispatch({
           type: "AUTH_USER_SUCCESS",
-          token: response.token,
+          token: response.responseBody.token,
         });
         dispatch({
           type: "GET_USER_SUCCESS",
@@ -71,7 +71,13 @@ export const userLogin = (payload) => {
 };
 
 export const logoutUser = () => {
-  return {
-    type: "USER_LOGOUT_SUCCESS",
+  return (dispatch) => {
+    dispatch({
+      type: "USER_LOGOUT_SUCCESS",
+    });
+    dispatch({
+      type: "GET_USER_FAIL",
+      payload: null,
+    });
   };
 };

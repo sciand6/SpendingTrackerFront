@@ -52,8 +52,6 @@ export const fetchApi = async (
 
     const response = await api(url, method, body, headers);
 
-    console.log(response);
-
     if (response.status === statusCode) {
       result.success = true;
 
@@ -84,8 +82,6 @@ export const fetchApi = async (
     }
 
     result.responseBody = errorBody;
-
-    console.log(result);
 
     throw result;
   } catch (error) {
