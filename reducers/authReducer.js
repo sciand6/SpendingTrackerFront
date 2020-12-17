@@ -11,7 +11,6 @@ const authData = (state = {}, action) => {
     case "AUTH_USER_FAIL":
     case "CREATE_USER_FAIL":
     case "LOGIN_USER_FAIL":
-    case "USER_LOGOUT_SUCCESS":
       return {
         isLoading: false,
         isError: false,

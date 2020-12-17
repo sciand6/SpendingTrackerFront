@@ -75,9 +75,5 @@ export const logoutUser = () => {
     dispatch({
       type: "USER_LOGOUT_SUCCESS",
     });
-    dispatch({
-      type: "GET_USER_FAIL",
-      payload: null,
-    });
   };
 };
