@@ -2,36 +2,26 @@ import React, { useState, useEffect } from "react";
 import { reduxForm, Field } from "redux-form";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { connect } from "react-redux";
-import { createNewUser } from "../actions/authActions";
+import { userLogin } from "../actions/authActions";
 import MyTextInput from "./MyTextInput";
 import { compose } from "redux";
 import Loader from "./Loader";
 
 function MyForm(props) {
-  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
-  const { createUser } = props;
+  const { loginUser } = props;
 
   useEffect(() => {
-    if (createUser.isLoggedIn) {
+    if (loginUser.isLoggedIn) {
       props.navigation.navigate("Dashboard");
     }
   });
   return (
     <View style={styles.container}>
-      {createUser.isLoading && <Loader />}
-      <Text style={styles.title}>Sign Up</Text>
-      <Field
-        style={styles.input}
-        name={"username"}
-        value={username}
-        onChange={(text) => setUsername(text)}
-        placeholder="Username"
-        component={MyTextInput}
-      />
+      {loginUser.isLoading && <Loader />}
+      <Text style={styles.title}>Login</Text>
       <Field
         style={styles.input}
         name={"email"}
@@ -49,19 +39,10 @@ function MyForm(props) {
         secureTextEntry={true}
         component={MyTextInput}
       />
-      <Field
-        style={styles.input}
-        name={"passwordConfirmation"}
-        value={passwordConfirmation}
-        onChange={(text) => setPasswordConfirmation(text)}
-        secureTextEntry={true}
-        placeholder="Password Confirmation"
-        component={MyTextInput}
-      />
       <TouchableOpacity
         style={styles.button}
         onPress={props.handleSubmit((values) =>
-          props.dispatch(createNewUser(values))
+          props.dispatch(userLogin(values))
         )}
       >
         <Text style={styles.buttonText}>Submit!</Text>
@@ -69,7 +50,6 @@ function MyForm(props) {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   button: {
     marginTop: 20,
@@ -95,7 +75,7 @@ const styles = StyleSheet.create({
   input: {
     height: 40,
     borderRadius: 25,
-    backgroundColor: "#DDD",
+    backgroundColor: "white",
     marginTop: 15,
     width: 300,
     paddingHorizontal: 10,
@@ -110,23 +90,17 @@ const styles = StyleSheet.create({
 
 const validate = (values) => {
   const errors = {};
-  if (!values.username) {
-    errors.username = "Username is required.";
-  }
   if (!values.email) {
     errors.email = "Email is required.";
   }
   if (!values.password) {
     errors.password = "Password is required.";
   }
-  if (!values.passwordConfirmation) {
-    errors.passwordConfirmation = "Passwords do not match.";
-  }
   return errors;
 };
 
 const mapStateToProps = (state) => ({
-  createUser: state.authReducer.createUser,
+  loginUser: state.authReducer.loginUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -136,7 +110,7 @@ const mapDispatchToProps = (dispatch) => ({
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   reduxForm({
-    form: "SignUp",
+    form: "Login",
     validate,
   })
 )(MyForm);

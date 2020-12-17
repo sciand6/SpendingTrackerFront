@@ -1,12 +1,6 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  TextInput,
-} from "react-native";
+import Dashboard from "../../components/Dashboard";
 
-export default function DashboardScreen() {
-  return <Text>Protected Route</Text>;
+export default function DashboardScreen({ navigation }) {
+  return <Dashboard navigation={navigation} />;
 }
