@@ -3,10 +3,12 @@ import { reducer as formReducer } from "redux-form";
 
 import authReducer from "./authReducer";
 import userReducer from "./userReducer";
+import expenseReducer from "./expenseReducer";
 
 const reducers = {
   authReducer,
   userReducer,
+  expenseReducer,
   form: formReducer,
 };
 

@@ -1,6 +1,12 @@
 const BASE_URL = "http://192.168.0.11:3000";
 
-export const api = async (url, method, body = null, headers = {}) => {
+export const api = async (
+  url,
+  method,
+  body = null,
+  headers = {},
+  token = null
+) => {
   try {
     const endPoint = BASE_URL.concat(url);
     const reqBody = body ? JSON.stringify(body) : null;
@@ -9,6 +15,10 @@ export const api = async (url, method, body = null, headers = {}) => {
 
     if ((method === "POST" || method === "PUT") && !reqBody) {
       throw new Error("Request body required");
+    }
+
+    if (token) {
+      fetchParams.headers["authorization"] = token;
     }
 
     if (reqBody) {
