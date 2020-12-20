@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View, FlatList } from "react-native";
 import { connect } from "react-redux";
 import { logoutUser } from "../actions/authActions";
 import { getExpenses } from "../actions/expenseActions";
@@ -7,12 +7,9 @@ import { getExpenses } from "../actions/expenseActions";
 function Dashboard(props) {
   const { getUser, expenseData } = props;
 
-  useEffect(() => {
-    if (getUser.userDetails) {
-      props.dispatch(getExpenses(getUser.userDetails.token));
-    }
-  });
-
+  if (getUser.userDetails) {
+    props.dispatch(getExpenses(getUser.userDetails.token));
+  }
   return (
     <View>
       <Text>
@@ -26,10 +23,22 @@ function Dashboard(props) {
       >
         <Text>Logout</Text>
       </TouchableOpacity>
-      {expenseData.expenses.expenses.length !== 0 ? (
-        expenseData.expenses.expenses.map((exp) => {
-          return <Text key={exp.day}>{exp.category}</Text>;
-        })
+      {expenseData.msg === "fetch successful" ? (
+        <FlatList
+          keyExtractor={(item) => item._id}
+          data={expenseData.expenses.expenses}
+          renderItem={({ item }) => (
+            <Text>
+              {new Date(item.day).getMonth() +
+                parseInt(1) +
+                "/" +
+                new Date(item.day).getDate() +
+                "/" +
+                new Date(item.day).getFullYear()}{" "}
+              | {item.category} | {item.price}
+            </Text>
+          )}
+        />
       ) : (
         <Text>No expenses found. Did you add any?</Text>
       )}

@@ -11,7 +11,7 @@ export const getExpenses = (payload) => {
         payload
       );
 
-      if (response.success) {
+      if (response.success && response.responseBody.expenses.length !== 0) {
         dispatch({
           type: "GET_EXPENSES_SUCCESS",
           payload: response.responseBody,
@@ -24,7 +24,6 @@ export const getExpenses = (payload) => {
     } catch (error) {
       dispatch({
         type: "GET_EXPENSES_FAIL",
-        payload: error.responseBody,
       });
       return error;
     }

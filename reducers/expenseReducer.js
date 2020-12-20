@@ -5,11 +5,13 @@ const getExpenses = (state = {}, action) => {
     case "GET_EXPENSES_SUCCESS":
       return {
         expenses: action.payload,
+        msg: "fetch successful",
       };
 
     case "GET_EXPENSES_FAIL":
       return {
-        msg: "No expenses found.",
+        expenses: [],
+        msg: "fetch failed",
       };
     default:
       return state;
