@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { reduxForm, Field } from "redux-form";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Alert, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import { createNewUser } from "../actions/authActions";
 import MyTextInput from "./MyTextInput";
@@ -14,6 +14,23 @@ function MyForm(props) {
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
   const { authData, createUser } = props;
+
+  // Error handling
+  const registerUserRequest = async (values) => {
+    try {
+      const response = await props.dispatch(createNewUser(values));
+      if (!response.success) {
+        throw response.responseBody;
+      }
+    } catch (error) {
+      Alert.alert("Login Error", error.msg, [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+      ]);
+    }
+  };
 
   useEffect(() => {
     if (authData.isLoggedIn) {
@@ -60,9 +77,7 @@ function MyForm(props) {
       />
       <TouchableOpacity
         style={styles.button}
-        onPress={props.handleSubmit((values) =>
-          props.dispatch(createNewUser(values))
-        )}
+        onPress={props.handleSubmit(registerUserRequest)}
       >
         <Text style={styles.buttonText}>Submit!</Text>
       </TouchableOpacity>

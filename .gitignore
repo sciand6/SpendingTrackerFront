@@ -1,4 +1,5 @@
 Notes.txt
+package-lock.json.bak
 node_modules/**/*
 .expo/*
 npm-debug.*
