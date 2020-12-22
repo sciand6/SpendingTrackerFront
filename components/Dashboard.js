@@ -1,5 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Text, TouchableOpacity, View, FlatList } from "react-native";
+import React, { useEffect } from "react";
+import {
+  Text,
+  TouchableOpacity,
+  View,
+  FlatList,
+  StyleSheet,
+  StatusBar,
+} from "react-native";
 import { connect } from "react-redux";
 import { logoutUser } from "../actions/authActions";
 import { getExpenses } from "../actions/expenseActions";
@@ -13,34 +20,38 @@ function Dashboard(props) {
     } else {
       props.navigation.navigate("Home");
     }
-  }, [expenseData, authData]);
+  }, [authData.isLoggedIn]);
 
   return (
-    <View>
-      <Text>
+    <View style={styles.container}>
+      <Text style={styles.header}>
         Welcome {getUser.userDetails ? getUser.userDetails.user.username : ""}
       </Text>
       <TouchableOpacity
+        style={styles.logoutButton}
         onPress={() => {
           props.dispatch(logoutUser());
         }}
       >
-        <Text>Logout</Text>
+        <Text style={styles.logoutText}>Logout</Text>
       </TouchableOpacity>
       {expenseData.expenses.length !== 0 ? (
         <FlatList
           keyExtractor={(item) => item._id}
           data={expenseData.expenses}
           renderItem={({ item }) => (
-            <Text>
-              {new Date(item.day).getMonth() +
-                parseInt(1) +
-                "/" +
-                new Date(item.day).getDate() +
-                "/" +
-                new Date(item.day).getFullYear()}{" "}
-              | {item.category} | {item.price}
-            </Text>
+            <View style={styles.expenseItem}>
+              <Text style={styles.expenseItemText}>
+                {new Date(item.day).getMonth() +
+                  parseInt(1) +
+                  "/" +
+                  new Date(item.day).getDate() +
+                  "/" +
+                  new Date(item.day).getFullYear()}
+              </Text>
+              <Text style={styles.expenseItemText}>{item.category}</Text>
+              <Text style={styles.expenseItemText}>{item.price}</Text>
+            </View>
           )}
         />
       ) : (
@@ -49,6 +60,35 @@ function Dashboard(props) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    paddingTop: StatusBar.currentHeight,
+  },
+  expenseItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    borderBottomWidth: 1,
+    borderColor: "#d2d2d2",
+    padding: 15,
+  },
+  expenseItemText: {
+    fontSize: 16,
+  },
+  header: {
+    position: "absolute",
+    paddingTop: StatusBar.currentHeight,
+  },
+  logoutButton: {
+    alignSelf: "flex-end",
+    backgroundColor: "green",
+    borderRadius: 15,
+    padding: 5,
+  },
+  logoutText: {
+    color: "white",
+  },
+});
 
 const mapStateToProps = (state) => ({
   authData: state.authReducer.authData,
