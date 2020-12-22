@@ -26,6 +26,15 @@ const getUser = (state = {}, action) => {
         userDetails: null,
         errors: action.payload,
       };
+
+    case "USER_LOGOUT_SUCCESS":
+      return {
+        isLoading: false,
+        isError: false,
+        isSuccess: false,
+        userDetails: null,
+        errors: null,
+      };
     default:
       return state;
   }

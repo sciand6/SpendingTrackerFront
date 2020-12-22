@@ -10,6 +10,7 @@ const authData = (state = {}, action) => {
 
     case "AUTH_USER_FAIL":
     case "CREATE_USER_FAIL":
+    case "USER_LOGOUT_SUCCESS":
     case "LOGIN_USER_FAIL":
       return {
         isLoading: false,
@@ -49,6 +50,14 @@ const createUser = (state = {}, action) => {
         errors: action.payload,
       };
 
+    case "USER_LOGOUT_SUCCESS":
+      return {
+        isLoading: false,
+        isError: false,
+        isSuccess: false,
+        errors: null,
+      };
+
     default:
       return state;
   }
@@ -78,6 +87,14 @@ const loginUser = (state = {}, action) => {
         isError: true,
         isSuccess: false,
         errors: action.payload,
+      };
+
+    case "USER_LOGOUT_SUCCESS":
+      return {
+        isLoading: false,
+        isError: false,
+        isSuccess: false,
+        errors: null,
       };
 
     default:

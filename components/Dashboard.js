@@ -5,11 +5,16 @@ import { logoutUser } from "../actions/authActions";
 import { getExpenses } from "../actions/expenseActions";
 
 function Dashboard(props) {
-  const { getUser, expenseData } = props;
+  const { authData, expenseData, getUser } = props;
 
-  if (getUser.userDetails) {
-    props.dispatch(getExpenses(getUser.userDetails.token));
-  }
+  useEffect(() => {
+    if (authData.isLoggedIn) {
+      props.dispatch(getExpenses(authData.token));
+    } else {
+      props.navigation.navigate("Home");
+    }
+  }, [expenseData, authData]);
+
   return (
     <View>
       <Text>
@@ -18,15 +23,14 @@ function Dashboard(props) {
       <TouchableOpacity
         onPress={() => {
           props.dispatch(logoutUser());
-          props.navigation.navigate("Home");
         }}
       >
         <Text>Logout</Text>
       </TouchableOpacity>
-      {expenseData.msg === "fetch successful" ? (
+      {expenseData.expenses.length !== 0 ? (
         <FlatList
           keyExtractor={(item) => item._id}
-          data={expenseData.expenses.expenses}
+          data={expenseData.expenses}
           renderItem={({ item }) => (
             <Text>
               {new Date(item.day).getMonth() +
@@ -47,8 +51,9 @@ function Dashboard(props) {
 }
 
 const mapStateToProps = (state) => ({
-  getUser: state.userReducer.getUser,
+  authData: state.authReducer.authData,
   expenseData: state.expenseReducer.getExpenses,
+  getUser: state.userReducer.getUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({
