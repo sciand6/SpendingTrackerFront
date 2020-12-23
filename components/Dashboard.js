@@ -10,6 +10,7 @@ import {
 import { connect } from "react-redux";
 import { logoutUser } from "../actions/authActions";
 import { getExpenses } from "../actions/expenseActions";
+import CreateExpenseForm from "./CreateExpenseForm";
 
 function Dashboard(props) {
   const { authData, expenseData, getUser } = props;
@@ -35,6 +36,7 @@ function Dashboard(props) {
       >
         <Text style={styles.logoutText}>Logout</Text>
       </TouchableOpacity>
+      <CreateExpenseForm />
       {expenseData.expenses.length !== 0 ? (
         <FlatList
           keyExtractor={(item) => item._id}

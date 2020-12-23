@@ -29,3 +29,36 @@ export const getExpenses = (payload) => {
     }
   };
 };
+
+export const createExpense = (payload, token) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: "CREATE_EXPENSE_LOADING",
+      });
+
+      const response = await fetchApi(
+        "/expenses/createExpense",
+        "POST",
+        payload,
+        200,
+        token
+      );
+
+      if (response.success) {
+        dispatch({
+          type: "CREATE_EXPENSE_SUCCESS",
+        });
+        return response;
+      } else {
+        throw response;
+      }
+    } catch (error) {
+      dispatch({
+        type: "CREATE_EXPENSE_FAIL",
+        payload: error.responseBody,
+      });
+      return error;
+    }
+  };
+};
