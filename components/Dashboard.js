@@ -7,6 +7,7 @@ import {
   StyleSheet,
   StatusBar,
 } from "react-native";
+import Icon from "react-native-vector-icons/AntDesign";
 import { connect } from "react-redux";
 import { logoutUser } from "../actions/authActions";
 import { getExpenses } from "../actions/expenseActions";
@@ -43,6 +44,14 @@ function Dashboard(props) {
           data={expenseData.expenses}
           renderItem={({ item }) => (
             <View style={styles.expenseItem}>
+              <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={() => console.log(item._id)}
+              >
+                <Text>
+                  <Icon name="delete" size={20} color="#e33057" />
+                </Text>
+              </TouchableOpacity>
               <Text style={styles.expenseItemText}>
                 {new Date(item.day).getMonth() +
                   parseInt(1) +
@@ -67,6 +76,7 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: StatusBar.currentHeight,
   },
+  deleteButton: { marginVertical: 2, marginHorizontal: 2 },
   expenseItem: {
     flexDirection: "row",
     justifyContent: "space-between",

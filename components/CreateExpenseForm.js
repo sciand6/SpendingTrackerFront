@@ -35,6 +35,7 @@ function MyForm(props) {
   return (
     <View>
       <Field
+        style={styles.input}
         name={"category"}
         value={category}
         onChange={(text) => setCategory(text)}
@@ -42,18 +43,43 @@ function MyForm(props) {
         component={MyTextInput}
       />
       <Field
+        style={styles.input}
         name={"price"}
         value={price}
         onChange={(text) => setPrice(parseFloat(text).toFixed(2) || price)}
         placeholder="Price"
         component={MyTextInput}
       />
-      <TouchableOpacity onPress={props.handleSubmit(createExpenseRequest)}>
-        <Text>Submit!</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={props.handleSubmit(createExpenseRequest)}
+      >
+        <Text style={styles.buttonText}>Submit!</Text>
       </TouchableOpacity>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  button: {
+    backgroundColor: "black",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 3,
+    marginTop: 3,
+    marginBottom: 2,
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+  },
+  input: {
+    borderColor: "black",
+    borderWidth: 2,
+    padding: 2,
+    marginTop: 3,
+  },
+});
 
 const validate = (values) => {
   const errors = {};
