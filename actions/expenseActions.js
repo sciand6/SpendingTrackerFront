@@ -62,3 +62,35 @@ export const createExpense = (payload, token) => {
     }
   };
 };
+
+export const deleteExpense = (id, token) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: "DELETE_EXPENSE_LOADING",
+      });
+
+      const response = await fetchApi(
+        `/expenses/deleteExpense/${id}`,
+        "DELETE",
+        null,
+        200,
+        token
+      );
+      if (response.success) {
+        dispatch({
+          type: "DELETE_EXPENSE_SUCCESS",
+        });
+        return response;
+      } else {
+        throw response;
+      }
+    } catch (error) {
+      dispatch({
+        type: "DELETE_EXPENSE_FAIL",
+        payload: error.responseBody,
+      });
+      return error;
+    }
+  };
+};

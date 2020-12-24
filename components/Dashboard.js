@@ -6,15 +6,34 @@ import {
   FlatList,
   StyleSheet,
   StatusBar,
+  Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 import { connect } from "react-redux";
 import { logoutUser } from "../actions/authActions";
-import { getExpenses } from "../actions/expenseActions";
+import { getExpenses, deleteExpense } from "../actions/expenseActions";
 import CreateExpenseForm from "./CreateExpenseForm";
 
 function Dashboard(props) {
   const { authData, expenseData, getUser } = props;
+
+  const deleteExpenseRequest = async (id) => {
+    try {
+      const response = await props.dispatch(deleteExpense(id, authData.token));
+      if (!response.success) {
+        throw response;
+      }
+      props.dispatch(getExpenses(authData.token));
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Expense Deletion Error", error.msg, [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+      ]);
+    }
+  };
 
   useEffect(() => {
     if (authData.isLoggedIn) {
@@ -46,7 +65,7 @@ function Dashboard(props) {
             <View style={styles.expenseItem}>
               <TouchableOpacity
                 style={styles.deleteButton}
-                onPress={() => console.log(item._id)}
+                onPress={() => deleteExpenseRequest(item._id)}
               >
                 <Text>
                   <Icon name="delete" size={20} color="#e33057" />

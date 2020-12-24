@@ -3,6 +3,7 @@ import { combineReducers } from "redux";
 const getExpenses = (state = {}, action) => {
   switch (action.type) {
     case "CREATE_EXPENSE_LOADING":
+    case "DELETE_EXPENSE_LOADING":
       return {
         ...state,
         isLoading: true,
@@ -11,6 +12,7 @@ const getExpenses = (state = {}, action) => {
         errors: null,
       };
     case "CREATE_EXPENSE_SUCCESS":
+    case "DELETE_EXPENSE_SUCCESS":
       return {
         ...state,
         isLoading: false,
@@ -19,6 +21,7 @@ const getExpenses = (state = {}, action) => {
         errors: null,
       };
     case "CREATE_EXPENSE_FAIL":
+    case "DELETE_EXPENSE_FAIL":
       return {
         ...state,
         isLoading: false,
