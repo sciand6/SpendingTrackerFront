@@ -22,8 +22,9 @@ function Dashboard(props) {
       const response = await props.dispatch(deleteExpense(id, authData.token));
       if (!response.success) {
         throw response;
+      } else {
+        props.dispatch(getExpenses(authData.token));
       }
-      props.dispatch(getExpenses(authData.token));
     } catch (error) {
       console.log(error);
       Alert.alert("Expense Deletion Error", error.msg, [
@@ -45,17 +46,19 @@ function Dashboard(props) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>
-        Welcome {getUser.userDetails ? getUser.userDetails.user.username : ""}
-      </Text>
-      <TouchableOpacity
-        style={styles.logoutButton}
-        onPress={() => {
-          props.dispatch(logoutUser());
-        }}
-      >
-        <Text style={styles.logoutText}>Logout</Text>
-      </TouchableOpacity>
+      <View style={styles.headerContainer}>
+        <Text style={styles.header}>
+          Welcome {getUser.userDetails ? getUser.userDetails.user.username : ""}
+        </Text>
+        <TouchableOpacity
+          style={styles.logoutButton}
+          onPress={() => {
+            props.dispatch(logoutUser());
+          }}
+        >
+          <Text style={styles.logoutText}>Logout</Text>
+        </TouchableOpacity>
+      </View>
       <CreateExpenseForm />
       {expenseData.expenses.length !== 0 ? (
         <FlatList
@@ -109,6 +112,12 @@ const styles = StyleSheet.create({
   header: {
     position: "absolute",
     paddingTop: StatusBar.currentHeight,
+    fontSize: 20,
+    fontWeight: "400",
+    color: "white",
+  },
+  headerContainer: {
+    backgroundColor: "green",
   },
   logoutButton: {
     alignSelf: "flex-end",

@@ -20,8 +20,9 @@ function MyForm(props) {
       );
       if (!response.success) {
         throw response;
+      } else {
+        props.dispatch(getExpenses(authData.token));
       }
-      props.dispatch(getExpenses(authData.token));
     } catch (error) {
       Alert.alert("Expense Creation Error", error.msg, [
         {
