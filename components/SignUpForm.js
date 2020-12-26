@@ -15,12 +15,13 @@ function MyForm(props) {
 
   const { authData, createUser } = props;
 
-  // Error handling
   const registerUserRequest = async (values) => {
     try {
       const response = await props.dispatch(createNewUser(values));
       if (!response.success) {
         throw response.responseBody;
+      } else {
+        props.navigation.navigate("Dashboard");
       }
     } catch (error) {
       Alert.alert("Login Error", error.msg, [

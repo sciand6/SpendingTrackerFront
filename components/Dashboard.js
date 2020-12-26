@@ -14,7 +14,7 @@ import { getExpenses, deleteExpense } from "../actions/expenseActions";
 import CreateExpenseForm from "./CreateExpenseForm";
 
 function Dashboard(props) {
-  const { authData, expenseData, getUser } = props;
+  const { authData, expenseData } = props;
 
   const deleteExpenseRequest = async (id) => {
     try {
@@ -25,7 +25,6 @@ function Dashboard(props) {
         props.dispatch(getExpenses(authData.token));
       }
     } catch (error) {
-      console.log(error);
       Alert.alert("Expense Deletion Error", error.msg, [
         {
           text: "Cancel",
@@ -46,9 +45,6 @@ function Dashboard(props) {
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <Text style={styles.header}>
-          Welcome {getUser.userDetails ? getUser.userDetails.user.username : ""}
-        </Text>
         <TouchableOpacity
           style={styles.logoutButton}
           onPress={() => {
@@ -59,34 +55,30 @@ function Dashboard(props) {
         </TouchableOpacity>
       </View>
       <CreateExpenseForm />
-      {expenseData.expenses.length !== 0 ? (
-        <FlatList
-          keyExtractor={(item) => item._id}
-          data={expenseData.expenses}
-          renderItem={({ item }) => (
-            <View style={styles.expenseItem}>
-              <TouchableOpacity
-                style={styles.deleteButton}
-                onPress={() => deleteExpenseRequest(item._id)}
-              >
-                <Text style={styles.deleteButtonText}>X</Text>
-              </TouchableOpacity>
-              <Text style={styles.expenseItemText}>
-                {new Date(item.day).getMonth() +
-                  parseInt(1) +
-                  "/" +
-                  new Date(item.day).getDate() +
-                  "/" +
-                  new Date(item.day).getFullYear()}
-              </Text>
-              <Text style={styles.expenseItemText}>{item.category}</Text>
-              <Text style={styles.expenseItemText}>{item.price}</Text>
-            </View>
-          )}
-        />
-      ) : (
-        <Text>No expenses found. Did you add any?</Text>
-      )}
+      <FlatList
+        keyExtractor={(item) => item._id}
+        data={expenseData.expenses}
+        renderItem={({ item }) => (
+          <View style={styles.expenseItem}>
+            <TouchableOpacity
+              style={styles.deleteButton}
+              onPress={() => deleteExpenseRequest(item._id)}
+            >
+              <Text style={styles.deleteButtonText}>X</Text>
+            </TouchableOpacity>
+            <Text style={styles.expenseItemText}>
+              {new Date(item.day).getMonth() +
+                parseInt(1) +
+                "/" +
+                new Date(item.day).getDate() +
+                "/" +
+                new Date(item.day).getFullYear()}
+            </Text>
+            <Text style={styles.expenseItemText}>{item.category}</Text>
+            <Text style={styles.expenseItemText}>{item.price}</Text>
+          </View>
+        )}
+      />
     </View>
   );
 }
@@ -110,13 +102,6 @@ const styles = StyleSheet.create({
   expenseItemText: {
     fontSize: 16,
   },
-  header: {
-    position: "absolute",
-    paddingTop: StatusBar.currentHeight,
-    fontSize: 20,
-    fontWeight: "400",
-    color: "white",
-  },
   headerContainer: {
     backgroundColor: "green",
   },
@@ -134,7 +119,6 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
   authData: state.authReducer.authData,
   expenseData: state.expenseReducer.getExpenses,
-  getUser: state.userReducer.getUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({

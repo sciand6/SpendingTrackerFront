@@ -13,12 +13,13 @@ function MyForm(props) {
 
   const { authData, loginUser } = props;
 
-  // Error handling
   const loginUserRequest = async (values) => {
     try {
       const response = await props.dispatch(userLogin(values));
       if (!response.success) {
         throw response.responseBody;
+      } else {
+        props.navigation.navigate("Dashboard");
       }
     } catch (error) {
       Alert.alert("Login Error", error.msg, [
@@ -35,6 +36,7 @@ function MyForm(props) {
       props.navigation.navigate("Dashboard");
     }
   });
+
   return (
     <View style={styles.container}>
       {loginUser.isLoading && <Loader />}

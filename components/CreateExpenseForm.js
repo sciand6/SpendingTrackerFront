@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import MyTextInput from "./MyTextInput";
 import { createExpense, getExpenses } from "../actions/expenseActions";
 import { compose } from "redux";
-import Loader from "./Loader";
 
 function MyForm(props) {
   const [category, setCategory] = useState("");
