@@ -1,13 +1,7 @@
 //const BASE_URL = "http://192.168.0.11:3000";
 const BASE_URL = "http://radiant-plateau-09444.herokuapp.com";
 
-export const api = async (
-  url,
-  method,
-  body = null,
-  headers = {},
-  token = null
-) => {
+export const api = async (url, method, body = null, headers = {}) => {
   try {
     const endPoint = BASE_URL.concat(url);
     const reqBody = body ? JSON.stringify(body) : null;
@@ -16,10 +10,6 @@ export const api = async (
 
     if ((method === "POST" || method === "PUT") && !reqBody) {
       throw new Error("Request body required");
-    }
-
-    if (token) {
-      fetchParams.headers["authorization"] = token;
     }
 
     if (reqBody) {
@@ -42,18 +32,10 @@ export const api = async (
   }
 };
 
-export const fetchApi = async (
-  url,
-  method,
-  body,
-  statusCode,
-  token = null,
-  loader = false
-) => {
+export const fetchApi = async (url, method, body, statusCode, token = null) => {
   try {
     const headers = {};
     const result = {
-      token: null,
       success: false,
       responseBody: null,
     };

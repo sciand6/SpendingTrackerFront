@@ -126,16 +126,20 @@ const styles = StyleSheet.create({
 
 const validate = (values) => {
   const errors = {};
+  const emailReg = /\S+@\S+\.\S+/;
   if (!values.username) {
     errors.username = "Username is required.";
   }
-  if (!values.email) {
-    errors.email = "Email is required.";
+  if (!values.email || !emailReg.test(values.email)) {
+    errors.email = "Enter a valid email address.";
   }
-  if (!values.password) {
-    errors.password = "Password is required.";
+  if (!values.password || values.password.length < 8) {
+    errors.password = "Passwords must be at least 8 characters long.";
   }
-  if (!values.passwordConfirmation) {
+  if (
+    !values.passwordConfirmation ||
+    values.password !== values.passwordConfirmation
+  ) {
     errors.passwordConfirmation = "Passwords do not match.";
   }
   return errors;

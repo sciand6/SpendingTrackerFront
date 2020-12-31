@@ -75,7 +75,9 @@ function Dashboard(props) {
                 new Date(item.day).getFullYear()}
             </Text>
             <Text style={styles.expenseItemText}>{item.category}</Text>
-            <Text style={styles.expenseItemText}>{item.price}</Text>
+            <Text style={styles.expenseItemText}>
+              {parseFloat(item.price).toFixed(2)}
+            </Text>
           </View>
         )}
       />

@@ -46,7 +46,7 @@ function MyForm(props) {
         style={styles.input}
         name={"price"}
         value={price}
-        onChange={(text) => setPrice(parseFloat(text).toFixed(2) || price)}
+        onChange={(text) => setPrice(text)}
         placeholder="Price"
         component={MyTextInput}
       />
