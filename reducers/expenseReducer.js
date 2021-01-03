@@ -1,6 +1,14 @@
 import { combineReducers } from "redux";
 
-const getExpenses = (state = {}, action) => {
+const initialState = {
+  expenses: [],
+  isLoading: false,
+  isError: false,
+  isSuccess: false,
+  errors: null,
+};
+
+const expenseReducer = (state = initialState, action) => {
   switch (action.type) {
     case "CREATE_EXPENSE_LOADING":
     case "DELETE_EXPENSE_LOADING":
@@ -32,13 +40,20 @@ const getExpenses = (state = {}, action) => {
     case "GET_EXPENSES_SUCCESS":
       return {
         ...state,
+        isLoading: false,
+        isError: false,
+        isSuccess: true,
+        errors: null,
         expenses: action.payload,
       };
     case "GET_EXPENSES_FAIL":
     case "USER_LOGOUT_SUCCESS":
       return {
-        ...state,
         expenses: [],
+        isLoading: false,
+        isError: false,
+        isSuccess: false,
+        errors: null,
       };
     default:
       return state;
@@ -46,5 +61,5 @@ const getExpenses = (state = {}, action) => {
 };
 
 export default combineReducers({
-  getExpenses,
+  expenseReducer,
 });

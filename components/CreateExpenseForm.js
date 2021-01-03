@@ -10,17 +10,17 @@ function MyForm(props) {
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState(0);
 
-  const { authData } = props;
+  const { authReducer } = props;
 
   const createExpenseRequest = async (values) => {
     try {
       const response = await props.dispatch(
-        createExpense(values, authData.token)
+        createExpense(values, authReducer.token)
       );
       if (!response.success) {
         throw response;
       } else {
-        props.dispatch(getExpenses(authData.token));
+        props.dispatch(getExpenses(authReducer.token));
       }
     } catch (error) {
       Alert.alert("Expense Creation Error", error.msg, [
@@ -93,7 +93,7 @@ const validate = (values) => {
 };
 
 const mapStateToProps = (state) => ({
-  authData: state.authReducer.authData,
+  authReducer: state.authReducer.authReducer,
 });
 
 const mapDispatchToProps = (dispatch) => ({

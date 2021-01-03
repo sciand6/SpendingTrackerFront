@@ -14,15 +14,17 @@ import { getExpenses, deleteExpense } from "../actions/expenseActions";
 import CreateExpenseForm from "./CreateExpenseForm";
 
 function Dashboard(props) {
-  const { authData, expenseData } = props;
+  const { authReducer, expenseReducer } = props;
 
   const deleteExpenseRequest = async (id) => {
     try {
-      const response = await props.dispatch(deleteExpense(id, authData.token));
+      const response = await props.dispatch(
+        deleteExpense(id, authReducer.token)
+      );
       if (!response.success) {
         throw response;
       } else {
-        props.dispatch(getExpenses(authData.token));
+        props.dispatch(getExpenses(authReducer.token));
       }
     } catch (error) {
       Alert.alert("Expense Deletion Error", error.msg, [
@@ -35,12 +37,12 @@ function Dashboard(props) {
   };
 
   useEffect(() => {
-    if (authData.isLoggedIn) {
-      props.dispatch(getExpenses(authData.token));
+    if (authReducer.isLoggedIn) {
+      props.dispatch(getExpenses(authReducer.token));
     } else {
       props.navigation.navigate("Home");
     }
-  }, [authData.isLoggedIn]);
+  }, [authReducer.isLoggedIn]);
 
   return (
     <View style={styles.container}>
@@ -57,7 +59,7 @@ function Dashboard(props) {
       <CreateExpenseForm />
       <FlatList
         keyExtractor={(item) => item._id}
-        data={expenseData.expenses}
+        data={expenseReducer.expenses}
         renderItem={({ item }) => (
           <View style={styles.expenseItem}>
             <TouchableOpacity
@@ -119,8 +121,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-  authData: state.authReducer.authData,
-  expenseData: state.expenseReducer.getExpenses,
+  authReducer: state.authReducer.authReducer,
+  expenseReducer: state.expenseReducer.expenseReducer,
 });
 
 const mapDispatchToProps = (dispatch) => ({

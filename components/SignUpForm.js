@@ -13,18 +13,16 @@ function MyForm(props) {
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
-  const { authData, createUser } = props;
+  const { authReducer } = props;
 
   const registerUserRequest = async (values) => {
     try {
       const response = await props.dispatch(createNewUser(values));
       if (!response.success) {
         throw response.responseBody;
-      } else {
-        props.navigation.navigate("Dashboard");
       }
     } catch (error) {
-      Alert.alert("Login Error", error.msg, [
+      Alert.alert("Registration Error", error.msg, [
         {
           text: "Cancel",
           style: "cancel",
@@ -34,13 +32,13 @@ function MyForm(props) {
   };
 
   useEffect(() => {
-    if (authData.isLoggedIn) {
+    if (authReducer.isLoggedIn) {
       props.navigation.navigate("Dashboard");
     }
-  });
+  }, [authReducer.isLoggedIn]);
   return (
     <View style={styles.container}>
-      {createUser.isLoading && <Loader />}
+      {authReducer.isLoading && <Loader />}
       <Text style={styles.title}>Sign Up</Text>
       <Field
         style={styles.input}
@@ -146,8 +144,7 @@ const validate = (values) => {
 };
 
 const mapStateToProps = (state) => ({
-  authData: state.authReducer.authData,
-  createUser: state.authReducer.createUser,
+  authReducer: state.authReducer.authReducer,
 });
 
 const mapDispatchToProps = (dispatch) => ({

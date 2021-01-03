@@ -11,14 +11,7 @@ export const createNewUser = (payload) => {
       if (response.success) {
         dispatch({
           type: "CREATE_USER_SUCCESS",
-        });
-        dispatch({
-          type: "AUTH_USER_SUCCESS",
           token: response.responseBody.token,
-        });
-        dispatch({
-          type: "GET_USER_SUCCESS",
-          payload: response.responseBody,
         });
 
         return response;
@@ -46,14 +39,7 @@ export const userLogin = (payload) => {
       if (response.success) {
         dispatch({
           type: "LOGIN_USER_SUCCESS",
-        });
-        dispatch({
-          type: "AUTH_USER_SUCCESS",
           token: response.responseBody.token,
-        });
-        dispatch({
-          type: "GET_USER_SUCCESS",
-          payload: response.responseBody,
         });
 
         return response;

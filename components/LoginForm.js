@@ -11,15 +11,13 @@ function MyForm(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { authData, loginUser } = props;
+  const { authReducer } = props;
 
   const loginUserRequest = async (values) => {
     try {
       const response = await props.dispatch(userLogin(values));
       if (!response.success) {
         throw response.responseBody;
-      } else {
-        props.navigation.navigate("Dashboard");
       }
     } catch (error) {
       Alert.alert("Login Error", error.msg, [
@@ -32,14 +30,14 @@ function MyForm(props) {
   };
 
   useEffect(() => {
-    if (authData.isLoggedIn) {
+    if (authReducer.isLoggedIn) {
       props.navigation.navigate("Dashboard");
     }
-  });
+  }, [authReducer.isLoggedIn]);
 
   return (
     <View style={styles.container}>
-      {loginUser.isLoading && <Loader />}
+      {authReducer.isLoading && <Loader />}
       <Text style={styles.title}>Login</Text>
       <Field
         style={styles.input}
@@ -117,8 +115,7 @@ const validate = (values) => {
 };
 
 const mapStateToProps = (state) => ({
-  authData: state.authReducer.authData,
-  loginUser: state.authReducer.loginUser,
+  authReducer: state.authReducer.authReducer,
 });
 
 const mapDispatchToProps = (dispatch) => ({

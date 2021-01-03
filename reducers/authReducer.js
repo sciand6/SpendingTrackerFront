@@ -1,41 +1,32 @@
 import { combineReducers } from "redux";
 
-const authData = (state = {}, action) => {
-  switch (action.type) {
-    case "AUTH_USER_SUCCESS":
-      return {
-        isLoggedIn: true,
-        token: action.token,
-      };
+const initialState = {
+  token: null,
+  isLoggedIn: false,
+  isLoading: false,
+  isError: false,
+  isSuccess: false,
+  errors: null,
+};
 
-    case "AUTH_USER_FAIL":
-    case "CREATE_USER_FAIL":
-    case "USER_LOGOUT_SUCCESS":
-    case "LOGIN_USER_FAIL":
+const authReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case "CREATE_USER_LOADING":
+    case "LOGIN_USER_LOADING":
       return {
+        token: action.token,
+        isLoggedIn: false,
         isLoading: false,
         isError: false,
         isSuccess: false,
-        errors: null,
-        isLoggedIn: false,
-      };
-    default:
-      return state;
-  }
-};
-
-const createUser = (state = {}, action) => {
-  switch (action.type) {
-    case "CREATE_USER_LOADING":
-      return {
-        isLoading: true,
-        isError: false,
-        isSuccess: false,
-        errors: null,
+        errors: false,
       };
 
     case "CREATE_USER_SUCCESS":
+    case "LOGIN_USER_SUCCESS":
       return {
+        token: action.token,
+        isLoggedIn: true,
         isLoading: false,
         isError: false,
         isSuccess: true,
@@ -43,46 +34,10 @@ const createUser = (state = {}, action) => {
       };
 
     case "CREATE_USER_FAIL":
-      return {
-        isLoading: false,
-        isError: true,
-        isSuccess: false,
-        errors: action.payload,
-      };
-
-    case "USER_LOGOUT_SUCCESS":
-      return {
-        isLoading: false,
-        isError: false,
-        isSuccess: false,
-        errors: null,
-      };
-
-    default:
-      return state;
-  }
-};
-
-const loginUser = (state = {}, action) => {
-  switch (action.type) {
-    case "LOGIN_USER_LOADING":
-      return {
-        isLoading: true,
-        isError: false,
-        isSuccess: false,
-        errors: null,
-      };
-
-    case "LOGIN_USER_SUCCESS":
-      return {
-        isLoading: false,
-        isError: false,
-        isSuccess: true,
-        errors: null,
-      };
-
     case "LOGIN_USER_FAIL":
       return {
+        token: null,
+        isLoggedIn: false,
         isLoading: false,
         isError: true,
         isSuccess: false,
@@ -91,6 +46,8 @@ const loginUser = (state = {}, action) => {
 
     case "USER_LOGOUT_SUCCESS":
       return {
+        token: null,
+        isLoggedIn: false,
         isLoading: false,
         isError: false,
         isSuccess: false,
@@ -103,7 +60,5 @@ const loginUser = (state = {}, action) => {
 };
 
 export default combineReducers({
-  createUser,
-  loginUser,
-  authData,
+  authReducer,
 });
