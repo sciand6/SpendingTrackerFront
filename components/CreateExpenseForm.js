@@ -3,24 +3,26 @@ import { reduxForm, Field } from "redux-form";
 import { View, Alert, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import MyTextInput from "./MyTextInput";
-import { createExpense, getExpenses } from "../actions/expenseActions";
+import { createExpense } from "../actions/expenseActions";
+import Loader from "./Loader";
 import { compose } from "redux";
 
 function MyForm(props) {
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState(0);
 
-  const { authReducer } = props;
+  const { authReducer, expenseReducer } = props;
 
   const createExpenseRequest = async (values) => {
     try {
       const response = await props.dispatch(
         createExpense(values, authReducer.token)
       );
+      if (response.success) {
+        props.navigation.navigate("Dashboard");
+      }
       if (!response.success) {
         throw response;
-      } else {
-        props.dispatch(getExpenses(authReducer.token));
       }
     } catch (error) {
       Alert.alert("Expense Creation Error", error.msg, [
@@ -33,7 +35,8 @@ function MyForm(props) {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
+      {expenseReducer.isLoading && <Loader />}
       <Field
         style={styles.input}
         name={"category"}
@@ -62,22 +65,33 @@ function MyForm(props) {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "black",
+    backgroundColor: "green",
     alignItems: "center",
     justifyContent: "center",
     padding: 3,
-    marginTop: 3,
-    marginBottom: 2,
+    marginTop: 5,
+    width: 250,
+    borderRadius: 25,
+    height: 40,
   },
   buttonText: {
     color: "white",
     fontWeight: "bold",
+    fontSize: 25,
+  },
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#85bb65",
   },
   input: {
-    borderColor: "black",
-    borderWidth: 2,
-    padding: 2,
-    marginTop: 3,
+    borderBottomColor: "#d2d2d2",
+    borderBottomWidth: 1,
+    backgroundColor: "white",
+    width: 250,
+    height: 40,
+    marginBottom: 10,
   },
 });
 
@@ -94,6 +108,7 @@ const validate = (values) => {
 
 const mapStateToProps = (state) => ({
   authReducer: state.authReducer.authReducer,
+  expenseReducer: state.expenseReducer.expenseReducer,
 });
 
 const mapDispatchToProps = (dispatch) => ({

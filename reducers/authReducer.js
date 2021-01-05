@@ -16,10 +16,10 @@ const authReducer = (state = initialState, action) => {
       return {
         token: action.token,
         isLoggedIn: false,
-        isLoading: false,
+        isLoading: true,
         isError: false,
         isSuccess: false,
-        errors: false,
+        errors: null,
       };
 
     case "CREATE_USER_SUCCESS":

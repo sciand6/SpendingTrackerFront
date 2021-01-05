@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { reduxForm, Field } from "redux-form";
 import { View, Alert, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { connect } from "react-redux";
@@ -18,6 +18,9 @@ function MyForm(props) {
   const registerUserRequest = async (values) => {
     try {
       const response = await props.dispatch(createNewUser(values));
+      if (response.success) {
+        props.navigation.navigate("Dashboard");
+      }
       if (!response.success) {
         throw response.responseBody;
       }
@@ -31,11 +34,6 @@ function MyForm(props) {
     }
   };
 
-  useEffect(() => {
-    if (authReducer.isLoggedIn) {
-      props.navigation.navigate("Dashboard");
-    }
-  }, [authReducer.isLoggedIn]);
   return (
     <View style={styles.container}>
       {authReducer.isLoading && <Loader />}
@@ -88,9 +86,9 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 20,
     backgroundColor: "green",
-    borderRadius: 5,
-    height: 50,
-    width: 160,
+    borderRadius: 25,
+    height: 40,
+    width: 300,
     alignItems: "center",
     justifyContent: "center",
   },
