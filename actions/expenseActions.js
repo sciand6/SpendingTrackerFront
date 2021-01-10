@@ -3,6 +3,9 @@ import { fetchApi } from "../service/api";
 export const getExpenses = (payload) => {
   return async (dispatch) => {
     try {
+      dispatch({
+        type: "GET_EXPENSES_LOADING",
+      });
       const response = await fetchApi(
         "/expenses/getExpenses",
         "GET",

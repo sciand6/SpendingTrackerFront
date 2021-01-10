@@ -12,6 +12,7 @@ const expenseReducer = (state = initialState, action) => {
   switch (action.type) {
     case "CREATE_EXPENSE_LOADING":
     case "DELETE_EXPENSE_LOADING":
+    case "GET_EXPENSES_LOADING":
       return {
         ...state,
         isLoading: true,

@@ -25,12 +25,16 @@ function MyForm(props) {
         throw response.responseBody;
       }
     } catch (error) {
-      Alert.alert("Registration Error", error.msg, [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-      ]);
+      Alert.alert(
+        "Registration Error",
+        "User with this email already exists.",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+        ]
+      );
     }
   };
 

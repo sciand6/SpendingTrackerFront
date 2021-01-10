@@ -23,7 +23,7 @@ function MyForm(props) {
         throw response.responseBody;
       }
     } catch (error) {
-      Alert.alert("Login Error", error.msg, [
+      Alert.alert("Login Error", "Invalid credentials.", [
         {
           text: "Cancel",
           style: "cancel",

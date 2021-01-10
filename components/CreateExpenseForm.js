@@ -25,12 +25,16 @@ function MyForm(props) {
         throw response;
       }
     } catch (error) {
-      Alert.alert("Expense Creation Error", error.msg, [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-      ]);
+      Alert.alert(
+        "Expense Creation Error",
+        "There was a problem adding that expense.",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+        ]
+      );
     }
   };
 

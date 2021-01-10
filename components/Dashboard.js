@@ -15,11 +15,11 @@ import { getExpenses, deleteExpense } from "../actions/expenseActions";
 function Dashboard(props) {
   const { authReducer, expenseReducer } = props;
   const [refreshing, setRefreshing] = useState(false);
+  const [weeklyTotal, setWeeklyTotal] = useState(0);
 
   const onRefresh = () => {
     setRefreshing(true);
     props.dispatch(getExpenses(authReducer.token));
-    setRefreshing(false);
   };
 
   const deleteExpenseRequest = async (id) => {
@@ -33,14 +33,44 @@ function Dashboard(props) {
         props.dispatch(getExpenses(authReducer.token));
       }
     } catch (error) {
-      Alert.alert("Expense Deletion Error", error.msg, [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-      ]);
+      Alert.alert(
+        "Expense Deletion Error",
+        "There was a problem deleting that expense.",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+        ]
+      );
     }
   };
+
+  useEffect(() => {
+    let curDate = new Date();
+    let lastday = curDate.getDate() - (curDate.getDay() - 1) + 5;
+    let firstday = curDate.getDate() - curDate.getDay();
+    let sunday = new Date(curDate.setDate(firstday));
+    let saturday = new Date(curDate.setDate(lastday));
+    saturday.setHours(0, 0, 0, 0);
+    sunday.setHours(0, 0, 0, 0);
+    let sum = 0;
+    for (let exp of expenseReducer.expenses) {
+      if (
+        new Date(exp.day).getTime() >= sunday.getTime() &&
+        new Date(exp.day).getTime() <= saturday.getTime()
+      ) {
+        sum += exp.price;
+      }
+    }
+    setWeeklyTotal(sum);
+  }, [expenseReducer.expenses]);
+
+  useEffect(() => {
+    if (!expenseReducer.isLoading) {
+      setRefreshing(false);
+    }
+  }, [expenseReducer.isLoading]);
 
   useEffect(() => {
     if (authReducer.isLoggedIn) {
@@ -53,13 +83,16 @@ function Dashboard(props) {
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
+        <Text style={styles.weeklyTotalText}>
+          You've spent {weeklyTotal.toFixed(2)} this week.
+        </Text>
         <TouchableOpacity
           style={styles.logoutButton}
           onPress={() => {
             props.dispatch(logoutUser());
           }}
         >
-          <Text style={styles.logoutText}>◀</Text>
+          <Text style={styles.logoutText}>LOGOUT</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.addExpenseButton}
@@ -67,7 +100,7 @@ function Dashboard(props) {
             props.navigation.navigate("CreateExpense");
           }}
         >
-          <Text style={styles.addExpenseButtonText}>+</Text>
+          <Text style={styles.addExpenseButtonText}>ADD{"\n"}EXPENSE</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.listContainer}>
@@ -107,18 +140,18 @@ function Dashboard(props) {
 const styles = StyleSheet.create({
   addExpenseButton: {
     borderWidth: 5,
-    borderColor: "white",
+    borderColor: "#d2d2d2",
     alignItems: "center",
-    justifyContent: "center",
-    width: 70,
-    height: 70,
+    width: 80,
+    height: 80,
     backgroundColor: "darkred",
-    borderRadius: 45,
+    borderRadius: 80,
   },
   addExpenseButtonText: {
     color: "white",
     fontWeight: "bold",
-    fontSize: 25,
+    marginTop: 15,
+    textAlign: "center",
   },
   container: {
     flex: 1,
@@ -147,22 +180,30 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   listContainer: {
-    flex: 4,
+    flex: 3,
   },
   logoutButton: {
     borderWidth: 5,
-    borderColor: "white",
+    borderColor: "#d2d2d2",
     alignItems: "center",
-    justifyContent: "center",
-    width: 70,
-    height: 70,
+    width: 80,
+    height: 80,
     backgroundColor: "darkred",
-    borderRadius: 45,
+    borderRadius: 80,
   },
   logoutText: {
     color: "white",
     fontWeight: "bold",
-    fontSize: 25,
+    marginTop: 26,
+    textAlign: "center",
+  },
+  weeklyTotalText: {
+    fontSize: 18,
+    color: "white",
+    fontWeight: "bold",
+    width: 100,
+    height: 100,
+    marginTop: 25,
   },
 });
 
