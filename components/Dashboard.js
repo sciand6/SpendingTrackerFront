@@ -9,7 +9,6 @@ import {
   Alert,
 } from "react-native";
 import { connect } from "react-redux";
-import { logoutUser } from "../actions/authActions";
 import { getExpenses, deleteExpense } from "../actions/expenseActions";
 
 function Dashboard(props) {
@@ -87,12 +86,12 @@ function Dashboard(props) {
           You've spent {weeklyTotal.toFixed(2)} this week.
         </Text>
         <TouchableOpacity
-          style={styles.logoutButton}
+          style={styles.accountButton}
           onPress={() => {
-            props.dispatch(logoutUser());
+            props.navigation.navigate("AccountManagement");
           }}
         >
-          <Text style={styles.logoutText}>LOGOUT</Text>
+          <Text style={styles.accountText}>ACCOUNT</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.addExpenseButton}
@@ -182,7 +181,7 @@ const styles = StyleSheet.create({
   listContainer: {
     flex: 3,
   },
-  logoutButton: {
+  accountButton: {
     borderWidth: 5,
     borderColor: "#d2d2d2",
     alignItems: "center",
@@ -191,7 +190,7 @@ const styles = StyleSheet.create({
     backgroundColor: "darkred",
     borderRadius: 80,
   },
-  logoutText: {
+  accountText: {
     color: "white",
     fontWeight: "bold",
     marginTop: 26,

@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { reduxForm, Field } from "redux-form";
 import { View, Alert, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { connect } from "react-redux";
-import MyTextInput from "./MyTextInput";
-import { createExpense } from "../actions/expenseActions";
-import Loader from "./Loader";
+import MyTextInput from "../Utils/MyTextInput";
+import { createExpense } from "../../actions/expenseActions";
+import Loader from "../Utils/Loader";
 import { compose } from "redux";
 
 function MyForm(props) {

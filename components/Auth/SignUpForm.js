@@ -2,20 +2,22 @@ import React, { useState } from "react";
 import { reduxForm, Field } from "redux-form";
 import { View, Alert, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { connect } from "react-redux";
-import { userLogin } from "../actions/authActions";
-import MyTextInput from "./MyTextInput";
+import { createNewUser } from "../../actions/authActions";
+import MyTextInput from "../Utils/MyTextInput";
 import { compose } from "redux";
-import Loader from "./Loader";
+import Loader from "../Utils/Loader";
 
 function MyForm(props) {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
   const { authReducer } = props;
 
-  const loginUserRequest = async (values) => {
+  const registerUserRequest = async (values) => {
     try {
-      const response = await props.dispatch(userLogin(values));
+      const response = await props.dispatch(createNewUser(values));
       if (response.success) {
         props.navigation.navigate("Dashboard");
       }
@@ -23,19 +25,31 @@ function MyForm(props) {
         throw response.responseBody;
       }
     } catch (error) {
-      Alert.alert("Login Error", "Invalid credentials.", [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-      ]);
+      Alert.alert(
+        "Registration Error",
+        "User with this email already exists.",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+        ]
+      );
     }
   };
 
   return (
     <View style={styles.container}>
       {authReducer.isLoading && <Loader />}
-      <Text style={styles.title}>Login</Text>
+      <Text style={styles.title}>Sign Up</Text>
+      <Field
+        style={styles.input}
+        name={"username"}
+        value={username}
+        onChange={(text) => setUsername(text)}
+        placeholder="Username"
+        component={MyTextInput}
+      />
       <Field
         style={styles.input}
         name={"email"}
@@ -53,15 +67,25 @@ function MyForm(props) {
         secureTextEntry={true}
         component={MyTextInput}
       />
+      <Field
+        style={styles.input}
+        name={"passwordConfirmation"}
+        value={passwordConfirmation}
+        onChange={(text) => setPasswordConfirmation(text)}
+        secureTextEntry={true}
+        placeholder="Password Confirmation"
+        component={MyTextInput}
+      />
       <TouchableOpacity
         style={styles.button}
-        onPress={props.handleSubmit(loginUserRequest)}
+        onPress={props.handleSubmit(registerUserRequest)}
       >
         <Text style={styles.buttonText}>Submit!</Text>
       </TouchableOpacity>
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   button: {
     marginTop: 20,
@@ -102,11 +126,21 @@ const styles = StyleSheet.create({
 
 const validate = (values) => {
   const errors = {};
-  if (!values.email) {
-    errors.email = "Email is required.";
+  const emailReg = /\S+@\S+\.\S+/;
+  if (!values.username) {
+    errors.username = "Username is required.";
   }
-  if (!values.password) {
-    errors.password = "Password is required.";
+  if (!values.email || !emailReg.test(values.email)) {
+    errors.email = "Enter a valid email address.";
+  }
+  if (!values.password || values.password.length < 8) {
+    errors.password = "Passwords must be at least 8 characters long.";
+  }
+  if (
+    !values.passwordConfirmation ||
+    values.password !== values.passwordConfirmation
+  ) {
+    errors.passwordConfirmation = "Passwords do not match.";
   }
   return errors;
 };
@@ -122,7 +156,7 @@ const mapDispatchToProps = (dispatch) => ({
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   reduxForm({
-    form: "Login",
+    form: "SignUp",
     validate,
   })
 )(MyForm);
