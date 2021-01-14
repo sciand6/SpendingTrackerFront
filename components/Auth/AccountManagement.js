@@ -10,6 +10,10 @@ function AccountManagement(props) {
         title="Change Password"
         onPress={() => props.navigation.navigate("ChangePassword")}
       />
+      <Button
+        title="Delete Account"
+        onPress={() => props.navigation.navigate("DeleteAccount")}
+      />
       <Button title="Logout" onPress={() => props.dispatch(logoutUser())} />
     </View>
   );

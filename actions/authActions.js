@@ -87,6 +87,37 @@ export const changePassword = (payload, token) => {
   };
 };
 
+export const deleteAccount = (payload, token) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: "DELETE_ACCOUNT_LOADING",
+      });
+
+      const response = await fetchApi(
+        "/auth/deleteAccount",
+        "DELETE",
+        payload,
+        200,
+        token
+      );
+
+      if (response.success) {
+        dispatch({ type: "DELETE_ACCOUNT_SUCCESS" });
+        return response;
+      } else {
+        throw response;
+      }
+    } catch (error) {
+      dispatch({
+        type: "DELETE_ACCOUNT_FAIL",
+        payload: error.responseBody,
+      });
+      return error;
+    }
+  };
+};
+
 export const logoutUser = () => {
   return (dispatch) => {
     dispatch({
