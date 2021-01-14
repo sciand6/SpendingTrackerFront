@@ -56,6 +56,37 @@ export const userLogin = (payload) => {
   };
 };
 
+export const changePassword = (payload, token) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: "CHANGE_PASSWORD_LOADING",
+      });
+
+      const response = await fetchApi(
+        "/auth/resetPassword",
+        "PUT",
+        payload,
+        200,
+        token
+      );
+
+      if (response.success) {
+        dispatch({ type: "CHANGE_PASSWORD_SUCCESS" });
+        return response;
+      } else {
+        throw response;
+      }
+    } catch (error) {
+      dispatch({
+        type: "CHANGE_PASSWORD_FAIL",
+        payload: error.responseBody,
+      });
+      return error;
+    }
+  };
+};
+
 export const logoutUser = () => {
   return (dispatch) => {
     dispatch({

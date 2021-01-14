@@ -22,6 +22,33 @@ const authReducer = (state = initialState, action) => {
         errors: null,
       };
 
+    case "CHANGE_PASSWORD_LOADING":
+      return {
+        ...state,
+        isLoading: true,
+        isError: false,
+        isSuccess: false,
+        errors: null,
+      };
+
+    case "CHANGE_PASSWORD_SUCCESS":
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        isSuccess: true,
+        errors: null,
+      };
+
+    case "CHANGE_PASSWORD_FAIL":
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+        isSuccess: false,
+        errors: action.payload,
+      };
+
     case "CREATE_USER_SUCCESS":
     case "LOGIN_USER_SUCCESS":
       return {
