@@ -1,19 +1,31 @@
 import React, { useState } from "react";
 import { reduxForm, Field } from "redux-form";
-import { View, Alert, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Alert,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Button,
+} from "react-native";
 import { connect } from "react-redux";
 import MyTextInput from "../Utils/MyTextInput";
 import { createExpense } from "../../actions/expenseActions";
 import Loader from "../Utils/Loader";
 import { compose } from "redux";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 function MyForm(props) {
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState(0);
+  const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState("date");
+  const [show, setShow] = useState(false);
 
   const { authReducer, expenseReducer } = props;
 
   const createExpenseRequest = async (values) => {
+    values.day = date;
     try {
       const response = await props.dispatch(
         createExpense(values, authReducer.token)
@@ -38,9 +50,45 @@ function MyForm(props) {
     }
   };
 
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === "ios");
+    setDate(currentDate);
+  };
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode("date");
+  };
+
+  const showTimepicker = () => {
+    showMode("time");
+  };
+
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Add Expense</Text>
+      <View style={styles.datepickerButton}>
+        <Button onPress={showDatepicker} title="Date" />
+      </View>
+      <View style={styles.datepickerButton}>
+        <Button onPress={showTimepicker} title="Time" />
+      </View>
       {expenseReducer.isLoading && <Loader />}
+      {show && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode={mode}
+          is24Hour={true}
+          display="default"
+          onChange={onChange}
+        />
+      )}
       <Field
         style={styles.input}
         name={"category"}
@@ -70,18 +118,16 @@ function MyForm(props) {
 const styles = StyleSheet.create({
   button: {
     backgroundColor: "green",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 3,
-    marginTop: 5,
-    width: 250,
     borderRadius: 25,
     height: 40,
+    width: 300,
+    alignItems: "center",
+    justifyContent: "center",
   },
   buttonText: {
     color: "white",
     fontWeight: "bold",
-    fontSize: 25,
+    fontSize: 28,
   },
   container: {
     flex: 1,
@@ -89,13 +135,22 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#85bb65",
   },
-  input: {
-    borderBottomColor: "#d2d2d2",
-    borderBottomWidth: 1,
-    backgroundColor: "white",
-    width: 250,
-    height: 40,
+  datepickerButton: {
     marginBottom: 10,
+  },
+  input: {
+    height: 40,
+    borderRadius: 25,
+    backgroundColor: "white",
+    marginBottom: 10,
+    width: 300,
+    paddingHorizontal: 10,
+  },
+  title: {
+    fontSize: 32,
+    color: "white",
+    fontWeight: "bold",
+    padding: 15,
   },
 });
 
