@@ -13,6 +13,7 @@ const expenseReducer = (state = initialState, action) => {
     case "CREATE_EXPENSE_LOADING":
     case "DELETE_EXPENSE_LOADING":
     case "GET_EXPENSES_LOADING":
+    case "EDIT_EXPENSE_LOADING":
       return {
         ...state,
         isLoading: true,
@@ -22,6 +23,7 @@ const expenseReducer = (state = initialState, action) => {
       };
     case "CREATE_EXPENSE_SUCCESS":
     case "DELETE_EXPENSE_SUCCESS":
+    case "EDIT_EXPENSE_SUCCESS":
       return {
         ...state,
         isLoading: false,
@@ -31,6 +33,7 @@ const expenseReducer = (state = initialState, action) => {
       };
     case "CREATE_EXPENSE_FAIL":
     case "DELETE_EXPENSE_FAIL":
+    case "EDIT_EXPENSE_FAIL":
       return {
         ...state,
         isLoading: false,

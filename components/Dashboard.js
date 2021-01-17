@@ -7,6 +7,7 @@ import {
   StyleSheet,
   StatusBar,
   Alert,
+  Button,
 } from "react-native";
 import { connect } from "react-redux";
 import { getExpenses, deleteExpense } from "../actions/expenseActions";
@@ -47,7 +48,7 @@ function Dashboard(props) {
 
   useEffect(() => {
     let curDate = new Date();
-    let lastday = curDate.getDate() - (curDate.getDay() - 1) + 5;
+    let lastday = curDate.getDate() - (curDate.getDay() - 1) + 6;
     let firstday = curDate.getDate() - curDate.getDay();
     let sunday = new Date(curDate.setDate(firstday));
     let saturday = new Date(curDate.setDate(lastday));
@@ -116,6 +117,12 @@ function Dashboard(props) {
               >
                 <Text style={styles.deleteButtonText}>X</Text>
               </TouchableOpacity>
+              <Button
+                title="Edit"
+                onPress={() =>
+                  props.navigation.navigate("EditExpense", { item })
+                }
+              />
               <Text style={styles.expenseItemText}>
                 {new Date(item.day).getMonth() +
                   parseInt(1) +

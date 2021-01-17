@@ -97,3 +97,36 @@ export const deleteExpense = (id, token) => {
     }
   };
 };
+
+export const editExpense = (id, payload, token) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: "EDIT_EXPENSE_LOADING",
+      });
+
+      const response = await fetchApi(
+        `/expenses/editExpense/${id}`,
+        "PUT",
+        payload,
+        200,
+        token
+      );
+
+      if (response.success) {
+        dispatch({
+          type: "EDIT_EXPENSE_SUCCESS",
+        });
+        return response;
+      } else {
+        throw response;
+      }
+    } catch (error) {
+      dispatch({
+        type: "EDIT_EXPENSE_FAIL",
+        payload: error.responseBody,
+      });
+      return error;
+    }
+  };
+};
