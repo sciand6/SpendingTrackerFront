@@ -87,20 +87,28 @@ function Dashboard(props) {
           You've spent {weeklyTotal.toFixed(2)} this week.
         </Text>
         <TouchableOpacity
-          style={styles.accountButton}
+          style={styles.headerButton}
           onPress={() => {
             props.navigation.navigate("AccountManagement");
           }}
         >
-          <Text style={styles.accountText}>ACCOUNT</Text>
+          <Text style={styles.headerButtonText}>MY ACCOUNT</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.addExpenseButton}
+          style={styles.headerButton}
+          onPress={() => {
+            props.navigation.navigate("ExpenseReport");
+          }}
+        >
+          <Text style={styles.headerButtonText}>EXPENSE REPORT</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.headerButton}
           onPress={() => {
             props.navigation.navigate("CreateExpense");
           }}
         >
-          <Text style={styles.addExpenseButtonText}>ADD{"\n"}EXPENSE</Text>
+          <Text style={styles.headerButtonText}>ADD{"\n"}EXPENSE</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.listContainer}>
@@ -144,21 +152,6 @@ function Dashboard(props) {
 }
 
 const styles = StyleSheet.create({
-  addExpenseButton: {
-    borderWidth: 5,
-    borderColor: "#d2d2d2",
-    alignItems: "center",
-    width: 80,
-    height: 80,
-    backgroundColor: "darkred",
-    borderRadius: 80,
-  },
-  addExpenseButtonText: {
-    color: "white",
-    fontWeight: "bold",
-    marginTop: 15,
-    textAlign: "center",
-  },
   container: {
     flex: 1,
     paddingTop: StatusBar.currentHeight,
@@ -178,6 +171,21 @@ const styles = StyleSheet.create({
   expenseItemText: {
     fontSize: 16,
   },
+  headerButton: {
+    borderWidth: 3,
+    borderColor: "#d2d2d2",
+    alignItems: "center",
+    width: 80,
+    height: 80,
+    backgroundColor: "darkred",
+    borderRadius: 80,
+  },
+  headerButtonText: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+    marginTop: 15,
+  },
   headerContainer: {
     flex: 1,
     flexDirection: "row",
@@ -187,21 +195,6 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     flex: 3,
-  },
-  accountButton: {
-    borderWidth: 5,
-    borderColor: "#d2d2d2",
-    alignItems: "center",
-    width: 80,
-    height: 80,
-    backgroundColor: "darkred",
-    borderRadius: 80,
-  },
-  accountText: {
-    color: "white",
-    fontWeight: "bold",
-    marginTop: 26,
-    textAlign: "center",
   },
   weeklyTotalText: {
     fontSize: 18,
