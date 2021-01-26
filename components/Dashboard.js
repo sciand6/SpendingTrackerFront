@@ -119,30 +119,34 @@ function Dashboard(props) {
           refreshing={refreshing}
           renderItem={({ item }) => (
             <View style={styles.expenseItem}>
-              <TouchableOpacity
-                style={styles.deleteButton}
-                onPress={() => deleteExpenseRequest(item._id)}
-              >
-                <Text style={styles.deleteButtonText}>X</Text>
-              </TouchableOpacity>
-              <Button
-                title="Edit"
-                onPress={() =>
-                  props.navigation.navigate("EditExpense", { item })
-                }
-              />
-              <Text style={styles.expenseItemText}>
-                {new Date(item.day).getMonth() +
-                  parseInt(1) +
-                  "/" +
-                  new Date(item.day).getDate() +
-                  "/" +
-                  new Date(item.day).getFullYear()}
-              </Text>
-              <Text style={styles.expenseItemText}>{item.category}</Text>
-              <Text style={styles.expenseItemText}>
-                {parseFloat(item.price).toFixed(2)}
-              </Text>
+              <View style={styles.expenseItemHeader}>
+                <TouchableOpacity
+                  style={styles.deleteButton}
+                  onPress={() => deleteExpenseRequest(item._id)}
+                >
+                  <Text style={styles.deleteButtonText}>X</Text>
+                </TouchableOpacity>
+                <Button
+                  title="Edit"
+                  onPress={() =>
+                    props.navigation.navigate("EditExpense", { item })
+                  }
+                />
+              </View>
+              <View style={styles.expenseItemBody}>
+                <Text style={styles.expenseItemText}>
+                  {new Date(item.day).getMonth() +
+                    parseInt(1) +
+                    "/" +
+                    new Date(item.day).getDate() +
+                    "/" +
+                    new Date(item.day).getFullYear()}
+                </Text>
+                <Text style={styles.expenseItemText}>{item.category}</Text>
+                <Text style={styles.expenseItemText}>
+                  {parseFloat(item.price).toFixed(2)}
+                </Text>
+              </View>
             </View>
           )}
         />
@@ -160,16 +164,28 @@ const styles = StyleSheet.create({
   deleteButtonText: {
     color: "red",
     fontWeight: "700",
+    fontSize: 18,
   },
   expenseItem: {
+    backgroundColor: "#fff",
+    marginLeft: 20,
+    marginRight: 20,
+    borderRadius: 10,
+    padding: 10,
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  expenseItemHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    borderBottomWidth: 1,
-    borderColor: "#d2d2d2",
-    padding: 15,
+    marginBottom: 25,
+  },
+  expenseItemBody: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   expenseItemText: {
-    fontSize: 16,
+    fontSize: 20,
   },
   headerButton: {
     borderWidth: 3,
@@ -195,6 +211,7 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     flex: 3,
+    backgroundColor: "green",
   },
   weeklyTotalText: {
     fontSize: 18,

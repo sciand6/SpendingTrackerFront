@@ -94,7 +94,7 @@ function MyForm(props) {
         name={"category"}
         value={category}
         onChange={(text) => setCategory(text)}
-        placeholder="Item/Category"
+        placeholder="Category"
         component={MyTextInput}
       />
       <Field
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
 const validate = (values) => {
   const errors = {};
   if (!values.category) {
-    errors.category = "Category/item is required.";
+    errors.category = "Category is required.";
   }
   if (!values.price || isNaN(values.price)) {
     errors.price = "Enter a valid number for price.";

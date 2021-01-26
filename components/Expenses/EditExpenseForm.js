@@ -69,6 +69,13 @@ function MyForm(props) {
     showMode("time");
   };
 
+  useEffect(() => {
+    props.initialize({
+      category: item.category,
+      price: item.price.toString(),
+    });
+  }, []);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Edit Expense</Text>
@@ -94,7 +101,7 @@ function MyForm(props) {
         name={"category"}
         value={category}
         onChange={(text) => setCategory(text)}
-        placeholder={item.category}
+        placeholder={"Category"}
         component={MyTextInput}
       />
       <Field
@@ -102,7 +109,7 @@ function MyForm(props) {
         name={"price"}
         value={price}
         onChange={(text) => setPrice(text)}
-        placeholder={item.price.toString()}
+        placeholder={"Price"}
         component={MyTextInput}
       />
       <TouchableOpacity
@@ -157,7 +164,7 @@ const styles = StyleSheet.create({
 const validate = (values) => {
   const errors = {};
   if (!values.category) {
-    errors.category = "Category/item is required.";
+    errors.category = "Category is required.";
   }
   if (!values.price || isNaN(values.price)) {
     errors.price = "Enter a valid number for price.";
@@ -179,5 +186,7 @@ export default compose(
   reduxForm({
     form: "EditExpense",
     validate,
+    enableReinitialize: true,
+    keepDirtyOnReinitialize: true,
   })
 )(MyForm);
