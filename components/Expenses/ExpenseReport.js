@@ -7,6 +7,7 @@ import { getExpenses } from "../../actions/expenseActions";
 function ExpenseReport(props) {
   const { authReducer, expenseReducer } = props;
   const [expenseReport, setExpenseReport] = useState([]);
+  const [totalSpent, setTotalSpent] = useState(0);
 
   useEffect(() => {
     props.dispatch(getExpenses(authReducer.token));
@@ -23,6 +24,7 @@ function ExpenseReport(props) {
           report[expense.category] += expense.price;
         }
       }
+      setTotalSpent(total);
       // Convert report object to array of expense objects
       for (let eReport of Object.entries(report)) {
         let reportObject = {
@@ -41,16 +43,22 @@ function ExpenseReport(props) {
   return (
     <View>
       <View style={styles.heading}>
-        <Text style={styles.headingText}>Total Expense Report</Text>
+        <Text style={styles.headingText}>
+          Total Spent: {totalSpent.toFixed(2)}
+        </Text>
       </View>
       <FlatList
         keyExtractor={(item) => item.category}
         data={expenseReport}
         renderItem={({ item }) => (
           <View style={styles.listItem}>
-            <Text>{item.category}</Text>
-            <Text>{item.percentage.toFixed(2)}%</Text>
-            <Text>{parseFloat(item.price).toFixed(2)}</Text>
+            <Text style={styles.listItemText}>{item.category}</Text>
+            <Text style={styles.listItemText}>
+              {parseFloat(item.price).toFixed(2)}
+            </Text>
+            <Text style={styles.listItemText}>
+              {item.percentage.toFixed(2)}%
+            </Text>
           </View>
         )}
       />
@@ -60,7 +68,6 @@ function ExpenseReport(props) {
 
 const styles = StyleSheet.create({
   heading: {
-    marginTop: StatusBar.currentHeight,
     backgroundColor: "green",
     padding: 20,
     alignItems: "center",
@@ -68,7 +75,7 @@ const styles = StyleSheet.create({
   },
   headingText: {
     fontSize: 20,
-    fontWeight: "800",
+    fontWeight: "bold",
     color: "#fff",
   },
   listItem: {
@@ -77,6 +84,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: "#d2d2d2",
     padding: 15,
+  },
+  listItemText: {
+    fontSize: 18,
+    fontWeight: "normal",
   },
 });
 

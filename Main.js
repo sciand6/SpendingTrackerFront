@@ -7,6 +7,7 @@ import DashboardScreen from "./screens/Home/DashboardScreen";
 import CreateExpenseScreen from "./screens/Home/Expenses/CreateExpenseScreen";
 import EditExpenseScreen from "./screens/Home/Expenses/EditExpenseScreen";
 import ExpenseReportScreen from "./screens/Home/Expenses/ExpenseReportScreen";
+import ExpenseListScreen from "./screens/Home/Expenses/ExpenseListScreen";
 import AccountManagementScreen from "./screens/Auth/AccountMangementScreen";
 import ChangePasswordScreen from "./screens/Auth/ChangePasswordScreen";
 import DeleteAccountScreen from "./screens/Auth/DeleteAccountScreen";
@@ -34,6 +35,7 @@ function Main(props) {
         <Stack.Screen name="CreateExpense" component={CreateExpenseScreen} />
         <Stack.Screen name="EditExpense" component={EditExpenseScreen} />
         <Stack.Screen name="ExpenseReport" component={ExpenseReportScreen} />
+        <Stack.Screen name="ExpenseList" component={ExpenseListScreen} />
         <Stack.Screen
           name="AccountManagement"
           component={AccountManagementScreen}

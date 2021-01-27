@@ -3,79 +3,20 @@ import {
   Text,
   TouchableOpacity,
   View,
-  FlatList,
   StyleSheet,
   StatusBar,
-  Alert,
-  Button,
 } from "react-native";
+import ExpenseListScreen from "../screens/Home/Expenses/ExpenseListScreen";
+import ExpenseReportScreen from "../screens/Home/Expenses/ExpenseReportScreen";
+import AccountManagementScreen from "../screens/Auth/AccountMangementScreen";
 import { connect } from "react-redux";
-import { getExpenses, deleteExpense } from "../actions/expenseActions";
 
 function Dashboard(props) {
-  const { authReducer, expenseReducer } = props;
-  const [refreshing, setRefreshing] = useState(false);
-  const [weeklyTotal, setWeeklyTotal] = useState(0);
-
-  const onRefresh = () => {
-    setRefreshing(true);
-    props.dispatch(getExpenses(authReducer.token));
-  };
-
-  const deleteExpenseRequest = async (id) => {
-    try {
-      const response = await props.dispatch(
-        deleteExpense(id, authReducer.token)
-      );
-      if (!response.success) {
-        throw response;
-      } else {
-        props.dispatch(getExpenses(authReducer.token));
-      }
-    } catch (error) {
-      Alert.alert(
-        "Expense Deletion Error",
-        "There was a problem deleting that expense.",
-        [
-          {
-            text: "Cancel",
-            style: "cancel",
-          },
-        ]
-      );
-    }
-  };
+  const [buttonActive, setButtonActive] = useState(1);
+  const { authReducer } = props;
 
   useEffect(() => {
-    let curDate = new Date();
-    let lastday = curDate.getDate() - (curDate.getDay() - 1) + 6;
-    let firstday = curDate.getDate() - curDate.getDay();
-    let sunday = new Date(curDate.setDate(firstday));
-    let saturday = new Date(curDate.setDate(lastday));
-    saturday.setHours(0, 0, 0, 0);
-    sunday.setHours(0, 0, 0, 0);
-    let sum = 0;
-    for (let exp of expenseReducer.expenses) {
-      if (
-        new Date(exp.day).getTime() >= sunday.getTime() &&
-        new Date(exp.day).getTime() <= saturday.getTime()
-      ) {
-        sum += exp.price;
-      }
-    }
-    setWeeklyTotal(sum);
-  }, [expenseReducer.expenses]);
-
-  useEffect(() => {
-    if (!expenseReducer.isLoading) {
-      setRefreshing(false);
-    }
-  }, [expenseReducer.isLoading]);
-
-  useEffect(() => {
-    if (authReducer.isLoggedIn) {
-      props.dispatch(getExpenses(authReducer.token));
-    } else {
+    if (!authReducer.isLoggedIn) {
       props.navigation.navigate("Home");
     }
   }, [authReducer.isLoggedIn]);
@@ -83,149 +24,97 @@ function Dashboard(props) {
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <Text style={styles.weeklyTotalText}>
-          You've spent {weeklyTotal.toFixed(2)} this week.
-        </Text>
         <TouchableOpacity
-          style={styles.headerButton}
+          style={
+            buttonActive == 1 ? styles.activeHeaderButton : styles.headerButton
+          }
           onPress={() => {
-            props.navigation.navigate("AccountManagement");
+            setButtonActive(1);
           }}
         >
-          <Text style={styles.headerButtonText}>MY ACCOUNT</Text>
+          <Text style={styles.headerButtonText}>Expenses</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.headerButton}
+          style={
+            buttonActive == 2 ? styles.activeHeaderButton : styles.headerButton
+          }
           onPress={() => {
-            props.navigation.navigate("ExpenseReport");
+            setButtonActive(2);
           }}
         >
-          <Text style={styles.headerButtonText}>EXPENSE REPORT</Text>
+          <Text style={styles.headerButtonText}>Report</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.headerButton}
+          style={
+            buttonActive == 3 ? styles.activeHeaderButton : styles.headerButton
+          }
           onPress={() => {
-            props.navigation.navigate("CreateExpense");
+            setButtonActive(3);
           }}
         >
-          <Text style={styles.headerButtonText}>ADD{"\n"}EXPENSE</Text>
+          <Text style={styles.headerButtonText}>Account</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.listContainer}>
-        <FlatList
-          keyExtractor={(item) => item._id}
-          data={expenseReducer.expenses}
-          onRefresh={() => onRefresh()}
-          refreshing={refreshing}
-          renderItem={({ item }) => (
-            <View style={styles.expenseItem}>
-              <View style={styles.expenseItemHeader}>
-                <TouchableOpacity
-                  style={styles.deleteButton}
-                  onPress={() => deleteExpenseRequest(item._id)}
-                >
-                  <Text style={styles.deleteButtonText}>X</Text>
-                </TouchableOpacity>
-                <Button
-                  title="Edit"
-                  onPress={() =>
-                    props.navigation.navigate("EditExpense", { item })
-                  }
-                />
-              </View>
-              <View style={styles.expenseItemBody}>
-                <Text style={styles.expenseItemText}>
-                  {new Date(item.day).getMonth() +
-                    parseInt(1) +
-                    "/" +
-                    new Date(item.day).getDate() +
-                    "/" +
-                    new Date(item.day).getFullYear()}
-                </Text>
-                <Text style={styles.expenseItemText}>{item.category}</Text>
-                <Text style={styles.expenseItemText}>
-                  {parseFloat(item.price).toFixed(2)}
-                </Text>
-              </View>
-            </View>
-          )}
-        />
-      </View>
+      {buttonActive == 1 ? (
+        <ExpenseListScreen navigation={props.navigation} />
+      ) : (
+        <View></View>
+      )}
+      {buttonActive == 2 ? (
+        <ExpenseReportScreen navigation={props.navigation} />
+      ) : (
+        <View></View>
+      )}
+      {buttonActive == 3 ? (
+        <AccountManagementScreen navigation={props.navigation} />
+      ) : (
+        <View></View>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  activeHeaderButton: {
+    borderBottomWidth: 4,
+    padding: 5,
+    borderColor: "black",
+    alignItems: "center",
+    width: "33.4%",
+    backgroundColor: "#e1e1e1",
+  },
+  activeHeaderButtonText: {
+    fontSize: 18,
+    color: "black",
+    textAlign: "center",
+    fontWeight: "bold",
+  },
   container: {
     flex: 1,
     paddingTop: StatusBar.currentHeight,
   },
-  deleteButton: { marginVertical: 2, marginHorizontal: 2 },
-  deleteButtonText: {
-    color: "red",
-    fontWeight: "700",
-    fontSize: 18,
-  },
-  expenseItem: {
-    backgroundColor: "#fff",
-    marginLeft: 20,
-    marginRight: 20,
-    borderRadius: 10,
-    padding: 10,
-    marginTop: 20,
-    marginBottom: 20,
-  },
-  expenseItemHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 25,
-  },
-  expenseItemBody: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  expenseItemText: {
-    fontSize: 20,
-  },
   headerButton: {
-    borderWidth: 3,
-    borderColor: "#d2d2d2",
+    borderBottomWidth: 4,
+    padding: 5,
+    borderColor: "#ccc",
     alignItems: "center",
-    width: 80,
-    height: 80,
-    backgroundColor: "darkred",
-    borderRadius: 80,
+    width: "33.25%",
   },
   headerButtonText: {
-    color: "white",
-    fontWeight: "bold",
+    fontSize: 18,
+    color: "black",
     textAlign: "center",
-    marginTop: 15,
   },
   headerContainer: {
-    flex: 1,
     flexDirection: "row",
-    backgroundColor: "green",
+    backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "space-evenly",
-  },
-  listContainer: {
-    flex: 3,
-    backgroundColor: "green",
-  },
-  weeklyTotalText: {
-    fontSize: 18,
-    color: "white",
-    fontWeight: "bold",
-    width: 100,
-    height: 100,
-    marginTop: 25,
+    justifyContent: "center",
   },
 });
 
 const mapStateToProps = (state) => ({
   authReducer: state.authReducer.authReducer,
-  expenseReducer: state.expenseReducer.expenseReducer,
 });
 
 const mapDispatchToProps = (dispatch) => ({

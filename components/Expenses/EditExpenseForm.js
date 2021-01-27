@@ -80,10 +80,10 @@ function MyForm(props) {
     <View style={styles.container}>
       <Text style={styles.title}>Edit Expense</Text>
       <View style={styles.datepickerButton}>
-        <Button onPress={showDatepicker} title="Date" />
+        <Button onPress={showDatepicker} title="Enter the date" />
       </View>
       <View style={styles.datepickerButton}>
-        <Button onPress={showTimepicker} title="Time" />
+        <Button onPress={showTimepicker} title="Enter the time" />
       </View>
       {expenseReducer.isLoading && <Loader />}
       {show && (
