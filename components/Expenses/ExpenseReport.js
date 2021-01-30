@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, StatusBar } from "react-native";
+import { View, Text, StyleSheet, Button } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { connect } from "react-redux";
 import { getExpenses } from "../../actions/expenseActions";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 function ExpenseReport(props) {
   const { authReducer, expenseReducer } = props;
   const [expenseReport, setExpenseReport] = useState([]);
   const [totalSpent, setTotalSpent] = useState(0);
+  const [fromDate, setFromDate] = useState(new Date());
+  const [showFromDate, setShowFromDate] = useState(false);
+  const [toDate, setToDate] = useState(new Date());
+  const [showToDate, setShowToDate] = useState(false);
+  const [mode, setMode] = useState("date");
 
   useEffect(() => {
     props.dispatch(getExpenses(authReducer.token));
@@ -17,11 +23,17 @@ function ExpenseReport(props) {
     if (expenseReducer.expenses.length !== 0) {
       // Generate expense report object
       for (let expense of expenseReducer.expenses) {
-        total += expense.price;
-        if (report[expense.category] === undefined) {
-          report[expense.category] = expense.price;
-        } else {
-          report[expense.category] += expense.price;
+        let dateRef = new Date(expense.day);
+        if (
+          dateRef.getTime() >= fromDate.getTime() &&
+          dateRef.getTime() <= toDate.getTime()
+        ) {
+          total += expense.price;
+          if (report[expense.category] === undefined) {
+            report[expense.category] = expense.price;
+          } else {
+            report[expense.category] += expense.price;
+          }
         }
       }
       setTotalSpent(total);
@@ -38,11 +50,78 @@ function ExpenseReport(props) {
       reportArr.sort((exp1, exp2) => (exp1.price < exp2.price ? 1 : -1));
       setExpenseReport(reportArr);
     }
-  }, []);
+  }, [fromDate, toDate]);
+
+  const changeFromDate = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShowFromDate(Platform.OS === "ios");
+    setFromDate(currentDate);
+  };
+
+  const changeToDate = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShowToDate(Platform.OS === "ios");
+    setToDate(currentDate);
+  };
+
+  const showMode = (currentMode, interval) => {
+    if (interval === "from") {
+      setShowFromDate(true);
+      setMode(currentMode);
+    } else {
+      setShowToDate(true);
+      setMode(currentMode);
+    }
+  };
+
+  const showDatepicker = (interval) => {
+    showMode("date", interval);
+  };
 
   return (
     <View>
       <View style={styles.heading}>
+        {showFromDate && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={fromDate}
+            mode={mode}
+            is24Hour={true}
+            display="default"
+            onChange={changeFromDate}
+          />
+        )}
+        {showToDate && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={toDate}
+            mode={mode}
+            is24Hour={true}
+            display="default"
+            onChange={changeToDate}
+          />
+        )}
+        <View style={styles.dateButtonView}>
+          <View style={styles.buttonSpacer}>
+            <Button onPress={() => showDatepicker("from")} title="From Date" />
+          </View>
+          <Button onPress={() => showDatepicker("to")} title="To Date" />
+        </View>
+        <Text style={styles.headingText}>
+          {fromDate.getMonth() +
+            parseInt(1) +
+            "/" +
+            fromDate.getDate() +
+            "/" +
+            fromDate.getFullYear() +
+            " - " +
+            toDate.getMonth() +
+            parseInt(1) +
+            "/" +
+            toDate.getDate() +
+            "/" +
+            toDate.getFullYear()}
+        </Text>
         <Text style={styles.headingText}>
           Total Spent: {totalSpent.toFixed(2)}
         </Text>
@@ -67,6 +146,12 @@ function ExpenseReport(props) {
 }
 
 const styles = StyleSheet.create({
+  buttonSpacer: {
+    marginRight: 20,
+  },
+  dateButtonView: {
+    flexDirection: "row",
+  },
   heading: {
     backgroundColor: "green",
     padding: 20,
