@@ -118,6 +118,36 @@ export const deleteAccount = (payload, token) => {
   };
 };
 
+export const ForgotPassword = (payload) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: "FORGOT_PASSWORD_LOADING",
+      });
+
+      const response = await fetchApi(
+        "/auth/forgotPassword",
+        "POST",
+        payload,
+        200
+      );
+
+      if (response.success) {
+        dispatch({ type: "FORGOT_PASSWORD_SUCCESS" });
+        return response;
+      } else {
+        throw response;
+      }
+    } catch (error) {
+      dispatch({
+        type: "FORGOT_PASSWORD_FAIL",
+        payload: error.responseBody,
+      });
+      return error;
+    }
+  };
+};
+
 export const logoutUser = () => {
   return (dispatch) => {
     dispatch({

@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import { reduxForm, Field } from "redux-form";
-import { View, Alert, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Alert,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Button,
+} from "react-native";
 import { connect } from "react-redux";
 import { userLogin } from "../../actions/authActions";
 import MyTextInput from "../Utils/MyTextInput";
@@ -53,6 +60,10 @@ function MyForm(props) {
         secureTextEntry={true}
         component={MyTextInput}
       />
+      <Button
+        title="Forgot Password"
+        onPress={() => props.navigation.navigate("ForgotPassword")}
+      />
       <TouchableOpacity
         style={styles.button}
         onPress={props.handleSubmit(loginUserRequest)}
@@ -88,7 +99,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 25,
     backgroundColor: "white",
-    marginTop: 15,
+    marginBottom: 15,
     width: 300,
     paddingHorizontal: 10,
   },

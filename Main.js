@@ -11,6 +11,7 @@ import ExpenseListScreen from "./screens/Home/Expenses/ExpenseListScreen";
 import AccountManagementScreen from "./screens/Auth/AccountMangementScreen";
 import ChangePasswordScreen from "./screens/Auth/ChangePasswordScreen";
 import DeleteAccountScreen from "./screens/Auth/DeleteAccountScreen";
+import ForgotPasswordScreen from "./screens/Auth/ForgotPasswordScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { connect } from "react-redux";
@@ -42,6 +43,7 @@ function Main(props) {
         />
         <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
         <Stack.Screen name="DeleteAccount" component={DeleteAccountScreen} />
+        <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

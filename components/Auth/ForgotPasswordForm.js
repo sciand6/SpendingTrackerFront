@@ -1,28 +1,24 @@
 import React, { useState } from "react";
 import { reduxForm, Field } from "redux-form";
 import { View, Alert, Text, TouchableOpacity, StyleSheet } from "react-native";
+import Loader from "../Utils/Loader";
 import { connect } from "react-redux";
-import { deleteAccount } from "../../actions/authActions";
+import { ForgotPassword } from "../../actions/authActions";
 import MyTextInput from "../Utils/MyTextInput";
 import { compose } from "redux";
-import Loader from "../Utils/Loader";
 
 function MyForm(props) {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
   const { authReducer } = props;
 
-  const deleteAccountRequest = async (values) => {
+  const forgotPasswordRequest = async (values) => {
     try {
-      const response = await props.dispatch(
-        deleteAccount(values, authReducer.token)
-      );
+      const response = await props.dispatch(ForgotPassword(values));
       if (response.success) {
         Alert.alert(
-          "Account Deletion Successful",
-          "Your account has been deleted.",
+          "Reset Link Sent",
+          "A link to reset your password has been sent to your email address.",
           [
             {
               text: "Ok",
@@ -36,8 +32,8 @@ function MyForm(props) {
       }
     } catch (error) {
       Alert.alert(
-        "Account Deletion Error",
-        "There was a problem deleting your account. Did you enter your password correctly?",
+        "Password Reset Error",
+        "There was a problem resetting your password.",
         [
           {
             text: "Cancel",
@@ -50,8 +46,8 @@ function MyForm(props) {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Forgot Password</Text>
       {authReducer.isLoading && <Loader />}
-      <Text style={styles.title}>Delete Account (Cannot be undone!)</Text>
       <Field
         style={styles.input}
         name={"email"}
@@ -60,35 +56,19 @@ function MyForm(props) {
         placeholder="Email"
         component={MyTextInput}
       />
-      <Field
-        style={styles.input}
-        name={"password"}
-        value={password}
-        onChange={(text) => setPassword(text)}
-        placeholder="Password"
-        secureTextEntry={true}
-        component={MyTextInput}
-      />
-      <Field
-        style={styles.input}
-        name={"passwordConfirmation"}
-        value={passwordConfirmation}
-        onChange={(text) => setPasswordConfirmation(text)}
-        placeholder="Password Confirmation"
-        secureTextEntry={true}
-        component={MyTextInput}
-      />
       <TouchableOpacity
         style={styles.button}
-        onPress={props.handleSubmit(deleteAccountRequest)}
+        onPress={props.handleSubmit(forgotPasswordRequest)}
       >
         <Text style={styles.buttonText}>Submit!</Text>
       </TouchableOpacity>
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   button: {
+    marginTop: 20,
     backgroundColor: "green",
     borderRadius: 25,
     height: 40,
@@ -112,7 +92,6 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 25,
     backgroundColor: "white",
-    marginBottom: 15,
     width: 300,
     paddingHorizontal: 10,
   },
@@ -121,7 +100,6 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     padding: 15,
-    textAlign: "center",
   },
 });
 
@@ -130,30 +108,21 @@ const validate = (values) => {
   if (!values.email) {
     errors.email = "Email is required.";
   }
-  if (!values.password) {
-    errors.password = "Password is required.";
-  }
-  if (
-    !values.passwordConfirmation ||
-    values.password !== values.passwordConfirmation
-  ) {
-    errors.passwordConfirmation = "Passwords do not match.";
-  }
   return errors;
 };
-
-const mapStateToProps = (state) => ({
-  authReducer: state.authReducer.authReducer,
-});
 
 const mapDispatchToProps = (dispatch) => ({
   dispatch,
 });
 
+const mapStateToProps = (state) => ({
+  authReducer: state.authReducer.authReducer,
+});
+
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   reduxForm({
-    form: "DeleteAccount",
+    form: "ForgotPassword",
     validate,
   })
 )(MyForm);

@@ -24,6 +24,7 @@ const authReducer = (state = initialState, action) => {
 
     case "CHANGE_PASSWORD_LOADING":
     case "DELETE_ACCOUNT_LOADING":
+    case "FORGOT_PASSWORD_LOADING":
       return {
         ...state,
         isLoading: true,
@@ -43,6 +44,7 @@ const authReducer = (state = initialState, action) => {
 
     case "CHANGE_PASSWORD_FAIL":
     case "DELETE_ACCOUNT_FAIL":
+    case "FORGOT_PASSWORD_FAIL":
       return {
         ...state,
         isLoading: false,
@@ -75,6 +77,7 @@ const authReducer = (state = initialState, action) => {
 
     case "USER_LOGOUT_SUCCESS":
     case "DELETE_ACCOUNT_SUCCESS":
+    case "FORGOT_PASSWORD_SUCCESS":
       return {
         token: null,
         isLoggedIn: false,

@@ -88,7 +88,6 @@ function MyForm(props) {
 
 const styles = StyleSheet.create({
   button: {
-    marginTop: 20,
     backgroundColor: "green",
     borderRadius: 25,
     height: 40,
@@ -112,7 +111,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 25,
     backgroundColor: "white",
-    marginTop: 15,
+    marginBottom: 15,
     width: 300,
     paddingHorizontal: 10,
   },

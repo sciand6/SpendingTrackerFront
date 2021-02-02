@@ -143,13 +143,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#85bb65",
   },
   datepickerButton: {
-    marginBottom: 10,
+    marginBottom: 15,
   },
   input: {
     height: 40,
     borderRadius: 25,
     backgroundColor: "white",
-    marginBottom: 10,
+    marginBottom: 15,
     width: 300,
     paddingHorizontal: 10,
   },
