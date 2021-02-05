@@ -1,74 +1,60 @@
 import React from "react";
-import {
-  ImageBackground,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
 
 export default function HomeScreen({ navigation }) {
   return (
-    <ImageBackground
-      source={require("../assets/money.jpg")}
-      style={styles.backgroundImage}
-    >
-      <View style={styles.logoContainer}>
-        <Text style={styles.logo}>Spending Tracker</Text>
-      </View>
+    <View style={styles.container}>
+      <Image style={styles.logoImage} source={require("../assets/icon.png")} />
+      <Text style={styles.logo}>Spent It</Text>
       <TouchableOpacity
         onPress={() => navigation.navigate("Register")}
-        style={styles.registerButton}
+        style={styles.button}
       >
         <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => navigation.navigate("Login")}
-        style={styles.loginButton}
+        style={styles.button}
       >
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
-    </ImageBackground>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  buttonText: {
-    fontSize: 26,
-    fontWeight: "bold",
-    color: "white",
+  button: {
+    color: "green",
+    borderColor: "#00cc00",
+    borderWidth: 0.5,
+    width: 300,
+    textAlign: "center",
+    borderRadius: 15,
+    marginTop: 20,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  backgroundImage: {
+  buttonText: {
+    fontSize: 22,
+    fontWeight: "500",
+    color: "green",
+    padding: 4,
+  },
+  container: {
     flex: 1,
     width: "100%",
     height: "100%",
-    justifyContent: "flex-end",
-    alignItems: "center",
-  },
-  loginButton: {
-    width: "100%",
-    height: 80,
-    backgroundColor: "green",
-    alignItems: "center",
     justifyContent: "center",
-  },
-  logoContainer: {
-    position: "absolute",
-    top: 120,
     alignItems: "center",
-    justifyContent: "center",
-    fontSize: 40,
+    backgroundColor: "#fff",
   },
   logo: {
     fontSize: 40,
     fontWeight: "bold",
-    color: "white",
+    color: "green",
   },
-  registerButton: {
-    width: "100%",
-    height: 70,
-    backgroundColor: "blue",
-    alignItems: "center",
-    justifyContent: "center",
+  logoImage: {
+    height: 80,
+    width: 80,
   },
 });

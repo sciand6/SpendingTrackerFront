@@ -99,21 +99,24 @@ function MyForm(props) {
 }
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "green",
-    borderRadius: 25,
-    height: 40,
+    color: "green",
+    borderColor: "#00cc00",
+    borderWidth: 0.5,
     width: 300,
-    alignItems: "center",
+    textAlign: "center",
+    borderRadius: 25,
     justifyContent: "center",
+    alignItems: "center",
   },
   buttonText: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 28,
+    fontSize: 22,
+    fontWeight: "500",
+    color: "green",
+    padding: 4,
   },
   container: {
     flex: 1,
-    backgroundColor: "#85bb65",
+    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
     height: 50,
@@ -121,6 +124,8 @@ const styles = StyleSheet.create({
   input: {
     height: 40,
     borderRadius: 25,
+    borderColor: "#00cc00",
+    borderWidth: 0.5,
     backgroundColor: "white",
     marginBottom: 15,
     width: 300,
@@ -128,7 +133,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 32,
-    color: "white",
+    color: "green",
     fontWeight: "bold",
     padding: 15,
   },

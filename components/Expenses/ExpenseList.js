@@ -46,18 +46,18 @@ function ExpenseList(props) {
   };
 
   useEffect(() => {
-    let curDate = new Date();
-    let lastday = curDate.getDate() - (curDate.getDay() - 1) + 6;
-    let firstday = curDate.getDate() - curDate.getDay();
-    let sunday = new Date(curDate.setDate(firstday));
-    let saturday = new Date(curDate.setDate(lastday));
-    saturday.setHours(0, 0, 0, 0);
-    sunday.setHours(0, 0, 0, 0);
+    let firstDayTemp = new Date();
+    let day = firstDayTemp.getDay();
+    let diff = firstDayTemp.getDate() - day + (day === 0 ? -6 : 1);
+    let firstday = new Date(firstDayTemp.setDate(diff));
+    firstday.setHours(0, 0, 0, 0);
+    let lastday = new Date(firstday);
+    lastday.setDate(lastday.getDate() + 7);
     let sum = 0;
     for (let exp of expenseReducer.expenses) {
       if (
-        new Date(exp.day).getTime() >= sunday.getTime() &&
-        new Date(exp.day).getTime() <= saturday.getTime()
+        new Date(exp.day).getTime() >= firstday.getTime() &&
+        new Date(exp.day).getTime() <= lastday.getTime()
       ) {
         sum += exp.price;
       }
@@ -146,6 +146,8 @@ const styles = StyleSheet.create({
   },
   expenseItem: {
     backgroundColor: "#fff",
+    borderWidth: 0.5,
+    borderColor: "#00cc00",
     marginLeft: 20,
     marginRight: 20,
     borderRadius: 10,
@@ -167,15 +169,15 @@ const styles = StyleSheet.create({
   },
   headerButton: {
     borderWidth: 3,
-    borderColor: "#d2d2d2",
+    borderColor: "#00cc00",
     alignItems: "center",
     width: 80,
     height: 80,
-    backgroundColor: "darkred",
+    backgroundColor: "#fff",
     borderRadius: 80,
   },
   headerButtonText: {
-    color: "white",
+    color: "green",
     fontWeight: "bold",
     textAlign: "center",
     marginTop: 15,
@@ -183,17 +185,17 @@ const styles = StyleSheet.create({
   headerContainer: {
     flex: 1,
     flexDirection: "row",
-    backgroundColor: "green",
+    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "space-evenly",
   },
   listContainer: {
     flex: 4,
-    backgroundColor: "green",
+    backgroundColor: "#fff",
   },
   weeklyTotalText: {
     fontSize: 18,
-    color: "white",
+    color: "green",
     fontWeight: "bold",
     width: 100,
     height: 100,

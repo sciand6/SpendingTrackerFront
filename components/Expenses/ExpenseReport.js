@@ -115,8 +115,7 @@ function ExpenseReport(props) {
             "/" +
             fromDate.getFullYear() +
             " - " +
-            toDate.getMonth() +
-            parseInt(1) +
+            (toDate.getMonth() + parseInt(1)) +
             "/" +
             toDate.getDate() +
             "/" +
@@ -153,7 +152,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   heading: {
-    backgroundColor: "green",
+    backgroundColor: "#fff",
     padding: 20,
     alignItems: "center",
     justifyContent: "center",
@@ -161,7 +160,7 @@ const styles = StyleSheet.create({
   headingText: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#fff",
+    color: "green",
   },
   listItem: {
     flexDirection: "row",
