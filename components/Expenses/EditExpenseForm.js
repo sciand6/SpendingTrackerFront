@@ -78,6 +78,12 @@ function MyForm(props) {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => props.navigation.navigate("Dashboard")}
+      >
+        <Text style={styles.backButtonText}>X</Text>
+      </TouchableOpacity>
       <Text style={styles.title}>Edit Expense</Text>
       <View style={styles.datepickerButton}>
         <Button onPress={showDatepicker} title="Enter the date" />
@@ -123,6 +129,22 @@ function MyForm(props) {
 }
 
 const styles = StyleSheet.create({
+  backButton: {
+    backgroundColor: "green",
+    borderRadius: 35,
+    height: 35,
+    width: 35,
+    position: "absolute",
+    top: 15,
+    left: 20,
+  },
+  backButtonText: {
+    color: "#fff",
+    fontWeight: "bolder",
+    fontSize: 20,
+    paddingLeft: 11,
+    paddingTop: 4,
+  },
   button: {
     color: "green",
     borderColor: "#00cc00",

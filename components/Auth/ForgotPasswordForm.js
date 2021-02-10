@@ -48,6 +48,12 @@ function MyForm(props) {
     <View style={styles.container}>
       <Text style={styles.title}>Forgot Password</Text>
       {authReducer.isLoading && <Loader />}
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => props.navigation.navigate("Home")}
+      >
+        <Text style={styles.backButtonText}>X</Text>
+      </TouchableOpacity>
       <Field
         style={styles.input}
         name={"email"}
@@ -67,6 +73,22 @@ function MyForm(props) {
 }
 
 const styles = StyleSheet.create({
+  backButton: {
+    backgroundColor: "green",
+    borderRadius: 35,
+    height: 35,
+    width: 35,
+    position: "absolute",
+    top: 15,
+    left: 20,
+  },
+  backButtonText: {
+    color: "#fff",
+    fontWeight: "bolder",
+    fontSize: 20,
+    paddingLeft: 11,
+    paddingTop: 4,
+  },
   button: {
     color: "green",
     borderColor: "#00cc00",

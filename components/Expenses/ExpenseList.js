@@ -96,6 +96,7 @@ function ExpenseList(props) {
           data={expenseReducer.expenses}
           onRefresh={() => onRefresh()}
           refreshing={refreshing}
+          initialNumToRender={4}
           renderItem={({ item }) => (
             <View style={styles.expenseItem}>
               <View style={styles.expenseItemHeader}>
